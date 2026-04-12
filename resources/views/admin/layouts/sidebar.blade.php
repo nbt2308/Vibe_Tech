@@ -16,9 +16,9 @@
         <div class="mb-4">
             <ul class="space-y-4 px-2">
                 <li>
-                    <a href="{{ route('admin.dashboard') }}"
+                    <a href="{{ route('dashboard') }}"
                         class="text-sm flex items-center font-medium hover:text-blue-600 transition-all
-                        {{ request()->routeIs('admin.dashboard') ? 'text-blue-600' : 'text-slate-800' }}">
+                        {{ request()->routeIs('dashboard') ? 'text-blue-600' : 'text-slate-800' }}">
                         <i class="fa-solid fa-house mr-3"></i>
                         <span>Tổng quan</span>
                     </a>
@@ -31,9 +31,9 @@
             <h4 class="text-sm text-slate-500 mb-4">Người dùng</h4>
             <ul class="space-y-4 px-2 flex-1">
                 <li>
-                    <a href="{{ route('admin.users') }}"
+                    <a href="{{ route('users') }}"
                         class="text-sm flex items-center font-medium hover:text-blue-600 transition-all
-                        {{ request()->routeIs('admin.users') ? 'text-blue-600' : 'text-slate-800' }}">
+                        {{ request()->routeIs('users') ? 'text-blue-600' : 'text-slate-800' }}">
                         <i class="fa-solid fa-users mr-3"></i>
                         <span>Danh sách người dùng</span>
                     </a>
@@ -55,22 +55,25 @@
             <h4 class="text-sm text-slate-500 mb-4">Sản phẩm</h4>
             <ul class="space-y-4 px-2 flex-1">
                 <li>
-                    <a href="javascript:void(0)"
-                        class="text-slate-800 text-sm flex items-center font-medium hover:text-blue-600 transition-all">
+                    <a href="{{ route('products') }}"
+                        class="text-sm flex items-center font-medium hover:text-blue-600 transition-all
+                        {{ request()->routeIs('products') ? 'text-blue-600' : 'text-slate-800' }}">
                         <i class="fa-solid fa-box mr-3"></i>
                         <span>Danh sách sản phẩm</span>
                     </a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)"
-                        class="text-slate-800 text-sm flex items-center font-medium hover:text-blue-600 transition-all">
+                    <a href="{{ route('categories') }}"
+                        class="text-sm flex items-center font-medium hover:text-blue-600 transition-all
+                        {{ request()->routeIs('categories') ? 'text-blue-600' : 'text-slate-800' }}">
                         <i class="fa-solid fa-tags mr-3"></i>
                         <span>Danh mục</span>
                     </a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)"
-                        class="text-slate-800 text-sm flex items-center font-medium hover:text-blue-600 transition-all">
+                    <a href="{{ route('brands') }}"
+                        class="text-sm flex items-center font-medium hover:text-blue-600 transition-all
+                        {{ request()->routeIs('brands') ? 'text-blue-600' : 'text-slate-800' }}">
                         <i class="fa-solid fa-copyright mr-3"></i>
                         <span>Thương hiệu</span>
                     </a>

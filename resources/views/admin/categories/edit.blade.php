@@ -1,0 +1,97 @@
+<div>
+    <div id="modal-edit-{{ $category->id }}" class="hidden">
+        <div
+            class="fixed inset-0 p-4 flex flex-wrap justify-center items-center w-full h-full z-[1000] before:fixed before:inset-0 before:w-full before:h-full before:bg-[rgba(0,0,0,0.5)] overflow-auto">
+            <div class="w-full max-w-lg bg-white shadow-lg rounded-lg p-8 relative z-10">
+                <div class="flex items-center">
+                    <h3 class="text-blue-600 text-xl font-semibold flex-1">Cập nhật danh mục</h3>
+                    <svg onclick="closeEditModal({{ $category->id }})" xmlns="http://www.w3.org/2000/svg"
+                        class="w-3.5 h-3.5 ml-2 cursor-pointer shrink-0 fill-gray-400 hover:fill-red-500"
+                        viewBox="0 0 320.591 320.591">
+                        <path
+                            d="M30.391 318.583a30.37 30.37 0 0 1-21.56-7.288c-11.774-11.844-11.774-30.973 0-42.817L266.643 10.665c12.246-11.459 31.462-10.822 42.921 1.424 10.362 11.074 10.966 28.095 1.414 39.875L51.647 311.295a30.366 30.366 0 0 1-21.256 7.288z"
+                            data-original="#000000"></path>
+                        <path
+                            d="M287.9 318.583a30.37 30.37 0 0 1-21.257-8.806L8.83 51.963C-2.078 39.225-.595 20.055 12.143 9.146c11.369-9.736 28.136-9.736 39.504 0l259.331 257.813c12.243 11.462 12.876 30.679 1.414 42.922-.456.487-.927.958-1.414 1.414a30.368 30.368 0 0 1-23.078 7.288z"
+                            data-original="#000000"></path>
+                    </svg>
+                </div>
+
+                <form class="space-y-6 mt-8" action="{{ route('admin.categories.update', $category->id) }}" method="POST"
+                    enctype="multipart/form-data">
+                    @csrf
+                    <div>
+                        <label class="text-slate-900 text-sm mb-2 block">Tên Danh Mục</label>
+                        <input type="text" placeholder="Nhập tên danh mục..." name="name" required value="{{  $category->name }}"
+                            class="px-4 py-3 bg-gray-100 w-full text-slate-900 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg" />
+                    </div>
+
+                    <div>
+                        <label class="text-slate-900 text-sm mb-2 block">Mô tả</label>
+                        <!-- Fix tag textarea HTML value -->
+                        <textarea placeholder='(Ví dụ: Bàn phím cơ, Chuột gaming, Màn hình,...)' name="description" required
+                            class="px-4 py-3 bg-gray-100 w-full text-slate-900 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
+                            rows="3">{{  $category->description }}</textarea>
+                    </div>
+                    <div>
+                        <label class="text-slate-900 text-sm mb-2 block">Ảnh đại diện cho danh mục (Thumbnail)</label>
+                        <p class="text-[11px] text-gray-500 mb-2">Ảnh vuông, hiển thị ở danh sách danh mục.</p>
+                        <div
+                            class="relative h-60 w-full  border-2 border-dashed border-gray-300 rounded-xl overflow-hidden group hover:border-blue-500 transition bg-gray-50 flex items-center justify-center">
+                            <!-- Input ẩn, bỏ thuộc tính required vì có thể giữ ảnh gốc -->
+                            <input type="file" id="thumbnailInputEdit-{{ $category->id }}" accept="image/*" name="thumbnail"
+                                class="absolute inset-0 w-full h-full opacity-0 cursor-pointer z-10" 
+                                onchange="previewThumbnailEdit(event, 'thumbnailPreviewEdit-{{ $category->id }}', 'thumbnailPlaceholderEdit-{{ $category->id }}')">
+
+                            <div id="thumbnailPlaceholderEdit-{{ $category->id }}"
+                                class="flex flex-col items-center justify-center pointer-events-none {{ $category->thumbnail ? 'hidden' : '' }}">
+                                <i
+                                    class="fas fa-image text-4xl text-gray-300 mb-2 group-hover:text-blue-400 transition"></i>
+                                <span class="text-sm text-gray-500 font-medium group-hover:text-blue-500">Click
+                                    để chọn</span>
+                            </div>
+
+
+                            <img id="thumbnailPreviewEdit-{{ $category->id }}" src="{{ $category->thumbnail ? asset('storage/' . $category->thumbnail) : '' }}"
+                                class="absolute inset-0 w-full h-full object-cover pointer-events-none {{ $category->thumbnail ? '' : 'hidden' }}">
+                        </div>
+                    </div>
+
+
+
+                    <div class="flex gap-4 !mt-8">
+                        <button type="submit"
+                            class="px-6 py-3 rounded-lg cursor-pointer text-white text-sm font-medium border-none outline-none tracking-wide bg-blue-600 hover:bg-blue-700">Submit</button>
+                        <button onclick="closeEditModal({{ $category->id }})" type="button"
+                            class="px-6 py-3 rounded-lg cursor-pointer text-slate-900 text-sm font-medium border-none outline-none tracking-wide bg-gray-200 hover:bg-gray-300">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+@once
+<script>
+    // JS: Hiển thị Preview Thumbnail cho phần Edit
+    function previewThumbnailEdit(event, previewId, placeholderId) {
+        const input = event.target;
+        if (input.files && input.files[0]) {
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                const previewImg = document.getElementById(previewId);
+                const placeholder = document.getElementById(placeholderId);
+
+                if (previewImg) {
+                    previewImg.src = e.target.result;
+                    previewImg.classList.remove('hidden');
+                }
+                if (placeholder) {
+                    placeholder.classList.add('hidden');
+                }
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+</script>
+@endonce

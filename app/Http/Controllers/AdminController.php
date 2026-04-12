@@ -12,4 +12,16 @@ class AdminController extends Controller
     public function users(){
         return view('admin.users.index');
     }
+    public function products(){
+        return view('admin.products.index');
+    }
+    public function categories(){
+        return view('admin.categories.index');
+    }
+    public function brands(){
+        return view('admin.brands.index');
+    }
+
+    
+
 }

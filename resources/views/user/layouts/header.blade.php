@@ -44,7 +44,7 @@
                 @if (Route::has('login'))
                     @auth
                         @if (Auth::user()->user_type === 1)
-                            <a href="{{ route('admin.dashboard.index') }}"
+                            <a href="{{ route('dashboard') }}"
                                 class="flex flex-col items-center text-gray-700 hover:text-blue-600 transition relative">
                                 <div class="relative mt-1">
                                     <i class="fas fa-user text-xl sm:mb-1"></i>

@@ -16,12 +16,12 @@ return new class extends Migration
             $table->unsignedBigInteger('category_id');
             $table->unsignedBigInteger('brand_id');
             $table->string('name');
-            $table->string('description');
+            $table->longText('description');
             $table->string('thumbnail');
-            $table->decimal('price', 10, 2);
-            $table->integer('stock_quantity');
+            $table->decimal('price', 15, 2);
+            $table->unsignedInteger('stock_quantity');
             $table->string('slug')->unique();
-            $table->boolean('status')->default(1); //0:inactive, 1:active
+            $table->boolean('status')->default(1)->comment('0:inactive, 1:active');
             $table->timestamps();
 
             
