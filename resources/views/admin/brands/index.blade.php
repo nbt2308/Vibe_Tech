@@ -10,12 +10,17 @@
 
             </div>
             <!-- Thanh tìm kiếm và nút thêm -->
-            <div class="flex justify-between">
-                <x-searchbar action="{{ route('brands') }}" placeholder="Nhập tên thương hiệu..." value="{{ request('search') }}" />
+            <div class="flex justify-between items-center">
+                <div >
+                    <p class="text-sm text-gray-700">Tìm kiếm</p>
+                    <x-searchbar action="{{ route('brands') }}" placeholder="Nhập tên thương hiệu..."
+                        value="{{ request('search') }}" />
+                </div>
                 @include('admin.brands.create')
-                <button id="openModal"
-                    class="bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg transition-colors">
-                    <i class="fas fa-plus mr-2"></i>Thêm thương hiệu
+                <button x-data @click="$dispatch('open-modal', 'create-brand-modal');"
+                    class="my-2 flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-lg shadow-blue-200 active:scale-95">
+                    <i class="fas fa-plus"></i>
+                    Thêm thương hiệu
                 </button>
             </div>
 
@@ -27,7 +32,7 @@
                         <table class="w-full text-left border-collapse">
                             <thead>
                                 <tr
-                                    class="bg-gray-50 border-b border-gray-200 text-sm text-gray-500 uppercase tracking-wider">
+                                    class="bg-gray-800 border-b border-gray-200 text-sm text-white uppercase tracking-wider">
                                     <th class="py-3 px-4 font-medium w-16">ID</th>
                                     <th class="py-3 px-4 font-medium">Tên thương hiệu</th>
                                     <th class="py-3 px-4 font-medium">Mô tả</th>
@@ -54,17 +59,16 @@
                                                 <span class="px-2 py-1  text-md whitespace-nowrap">{{ $brand->description }}</span>
                                             </td>
                                             <td class="py-3 px-4 text-right space-x-3 whitespace-nowrap">
-                                                <button type="button" onclick="openEditModal({{ $brand->id }})"
-                                                    class="text-blue-600 hover:text-blue-800 transition" title="Sửa">
+                                                <button x-data @click="$dispatch('open-modal', 'edit-brand-modal-{{ $brand->id }}');"
+                                                    class="text-blue-600 hover:bg-blue-50 rounded-lg transition-colors p-2" title="Sửa">
                                                     <i class="fas fa-edit"></i></button>
-                                                <button onclick="openDeleteModal({{ $brand->id }})"
-                                                    class="text-red-600 hover:text-red-800 transition" title="Xóa">
+                                                <button x-data @click="$dispatch('open-modal', 'delete-brand-modal-{{ $brand->id }}');"
+                                                    class="text-red-600 hover:bg-red-50 rounded-lg transition-colors p-2" title="Xóa">
                                                     <i class="fas fa-trash-alt"></i>
                                                 </button>
                                             </td>
                                         </tr>
-                                        @include('admin.brands.edit', ['brand' => $brand])
-                                        @include('admin.brands.delete', ['brand' => $brand])
+
                                     @endforeach
                                 @endif
 
@@ -75,55 +79,16 @@
                     <div class="my-6 mx-6">
                         {{ $brands->links() }}
                     </div>
+
+                    @if($brands->count() > 0)
+                        @foreach ($brands as $brand)
+                            @include('admin.brands.edit', ['brand' => $brand])
+                            @include('admin.brands.delete', ['brand' => $brand])    
+                        @endforeach
+                    @endif
                 </div>
 
             </div>
         </div>
     </main>
-    <!-- Mở modal thêm mới -->
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            let modal = document.getElementById('modal');
-            let openModalBtn = document.getElementById('openModal');
-            let closeModalBtns = [document.getElementById('closeIcon'), document.getElementById('closeButton')];
-
-            function showModal() {
-                modal.classList.remove('hidden');
-            }
-
-            function hideModal() {
-                modal.classList.add('hidden');
-            }
-
-            openModalBtn.addEventListener('click', showModal);
-
-            closeModalBtns.forEach(btn => btn.addEventListener('click', hideModal));
-
-            // Close modal when clicking outside the modal content
-            modal.addEventListener('click', (event) => {
-                if (event.target === modal.firstElementChild) {
-                    hideModal();
-                }
-            });
-        });
-    </script>
-    <!-- Mở modal edit -->
-    <script>
-        function openEditModal(id) {
-            document.getElementById('modal-edit-' + id).classList.remove('hidden');
-        }
-
-        function closeEditModal(id) {
-            document.getElementById('modal-edit-' + id).classList.add('hidden');
-        }
-
-        function openDeleteModal(id) {
-            document.getElementById('modal-delete-' + id).classList.remove('hidden');
-        }
-
-        function closeDeleteModal(id) {
-            document.getElementById('modal-delete-' + id).classList.add('hidden');
-        }
-
-    </script>
 @endsection

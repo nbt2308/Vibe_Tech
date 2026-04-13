@@ -48,21 +48,21 @@ Route::prefix('admin')->middleware(['auth', IsAdmin::class])->group(function () 
     // Categories CRUD route
     Route::post('/categories/store', [CategoryController::class, 'store'])->name('admin.categories.store');
     Route::get('/categories/edit/{id}', [CategoryController::class, 'edit'])->name('admin.categories.edit');
-    Route::post('/categories/update/{id}', [CategoryController::class, 'update'])->name('admin.categories.update');
+    Route::put('/categories/update/{id}', [CategoryController::class, 'update'])->name('admin.categories.update');
     Route::get('/categories/delete/{id}', [CategoryController::class, 'delete'])->name('admin.categories.delete');
     Route::get('/categories/destroy/{id}', [CategoryController::class, 'destroy'])->name('admin.categories.destroy');
    
     // Brands CRUD route
     Route::post('/brands/store', [BrandController::class, 'store'])->name('admin.brands.store');
     Route::get('/brands/edit/{id}', [BrandController::class, 'edit'])->name('admin.brands.edit');
-    Route::post('/brands/update/{id}', [BrandController::class, 'update'])->name('admin.brands.update');
+    Route::put('/brands/update/{id}', [BrandController::class, 'update'])->name('admin.brands.update');
     Route::get('/brands/delete/{id}', [BrandController::class, 'delete'])->name('admin.brands.delete');
     Route::get('/brands/destroy/{id}', [BrandController::class, 'destroy'])->name('admin.brands.destroy');
 
     // Product CRUD route 
     Route::post('/products/store', [ProductController::class, 'store'])->name('admin.products.store');
     Route::get('/products/edit/{id}', [ProductController::class, 'edit'])->name('admin.products.edit');
-    Route::post('/products/update/{id}', [ProductController::class, 'update'])->name('admin.products.update');
+    Route::put('/products/update/{id}', [ProductController::class, 'update'])->name('admin.products.update');
     Route::get('/products/delete/{id}', [ProductController::class, 'delete'])->name('admin.products.delete');
     Route::get('/products/destroy/{id}', [ProductController::class, 'destroy'])->name('admin.products.destroy');
 });
