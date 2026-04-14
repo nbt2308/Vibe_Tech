@@ -2,7 +2,11 @@
 
 namespace App\Providers;
 
+use App\Models\Brand;
+use App\Models\Product;
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
+use App\Models\Category;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -19,6 +23,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        View::share('categories', Category::all());
+        View::share('brands', Brand::all());
+        View::share('products', Product::all());
+
     }
 }

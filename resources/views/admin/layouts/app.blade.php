@@ -30,13 +30,12 @@
     @include('admin.layouts.sidebar')
 
 
-    <main class="flex-1 flex flex-col ">
+    <main class="flex-1 flex flex-col h-screen overflow-y-auto w-full">
         @include('admin.layouts.header')
-        <section class="overflow-auto h-full">
+        <div class="flex-1">
             @yield('content')
-        </section>
+        </div>
         @include('admin.layouts.footer')
-
     </main>
     <script>
         const Toast = Swal.mixin({

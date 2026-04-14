@@ -1,9 +1,11 @@
 <?php
 
-use App\Http\Controllers\AdminController;
-use App\Http\Controllers\BrandController;
-use App\Http\Controllers\CategoryController;
-use App\Http\Controllers\ProductController;
+use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\ProductController;
+
+
 use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
 
@@ -12,10 +14,10 @@ Route::get('/', function () {
     return view('user.home.index');
 })->name('home');
 
+//Route danh sách sản phẩm theo danh mục
+Route::get('/category/{slug}', [\App\Http\Controllers\Client\CategoryController::class, 'show'])->name('categories.show');
 // Products
-// Route::get('/san-pham', function () {
-//     return view('user.home.index'); // Placeholder view
-// })->name('products');
+
 
 // Giới thiệu
 Route::get('/gioi-thieu', function () {

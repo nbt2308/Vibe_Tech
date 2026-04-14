@@ -39,7 +39,8 @@
                         @endif
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Thương hiệu</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Thương hiệu <span
+                                class="text-red-500">*</span></label>
 
                         @if($brands->count() == 0)
                             <select name="" disabled
@@ -69,9 +70,24 @@
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Số lượng kho</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Số lượng kho <span
+                                class="text-red-500">*</span></label>
                         <input type="number" placeholder="0" name="stock_quantity" required min="0"
                             value="{{ $product->stock_quantity }}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Giá Giảm (VNĐ)</label>
+                        <input type="number" placeholder="VD: 500000" name="sale_price" min="0"
+                            value="{{ $product->sale_price }}"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Sku <span
+                                class="text-red-500">*</span></label>
+                        <input type="text" placeholder="VD: CGM-RZ-001" name="sku" required value="{{ $product->sku }}"
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                 </div>
@@ -81,13 +97,14 @@
             <div class="col-span-1 space-y-4">
                 <div class="form-group mb-3">
                     <label for="thumbnail" class="block text-sm font-medium text-gray-700 mb-1">Chọn
-                        ảnh đại diện:<span class="text-red-500">*</span></label>
+                        ảnh đại diện <span class="text-red-500">*</span></label>
                     <input type="file" class="filepond-thumbnail-{{ $product->id }}" name="thumbnail"
                         id="filepond-thumbnail-{{ $product->id }}" accept="image/png, image/jpeg, image/jpg">
                 </div>
 
                 <div>
-                    <label class="block text-sm font-medium text-gray-700 mb-1">Trạng thái</label>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Trạng thái <span
+                            class="text-red-500">*</span></label>
                     <select name="status" required
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
                         <option value="1" {{ $product->status == 1 ? 'selected' : '' }}>Hiển thị (Đang bán)
@@ -203,7 +220,9 @@
                         allowImagePreview: true,
                         imagePreviewHeight: 170,
                     });
+
                 }
+                
 
                 // Gallery
                 const inputGallery = document.querySelector('.filepond-gallery-{{ $product->id }}');

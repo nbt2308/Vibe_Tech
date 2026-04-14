@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
 use App\Models\Brand;
 use App\Models\Category;
@@ -23,7 +24,8 @@ class ProductController extends Controller
         $query = Product::query();
 
         if (!empty($keyword)) {
-            $query->where('name', 'LIKE', '%' . $keyword . '%');
+            $query->where('name', 'LIKE', '%' . $keyword . '%')
+                ->orWhere('sku', 'LIKE', '%' . $keyword . '%');
         }
         if ($request->has('status') && $status !== null && $status !== '') {
             $query->where('status', $status);
@@ -32,10 +34,10 @@ class ProductController extends Controller
             $query->where('category_id', $categoryFilter);
         }
         $products = $query->latest()->with('category', 'brand', 'productImages')
-            ->paginate(2)
+            ->paginate(5)
             ->withQueryString();
-        $category = Category::all();
-        $brand = Brand::all();
+        $category = Category::where('status',1)->get();
+        $brand = Brand::where('status',1)->get();
 
         //product còn bán
         $product_status_true = Product::where('status', 1)->count();
@@ -69,8 +71,10 @@ class ProductController extends Controller
 
         $product = Product::create([
             "name" => $request->name,
+            "sku" => $request->sku,
             "description" => $request->description,
             "price" => $request->price,
+            "sale_price" => $request->sale_price,
             "stock_quantity" => $request->stock_quantity,
             "category_id" => $request->category_id,
             "brand_id" => $request->brand_id,
@@ -153,8 +157,10 @@ class ProductController extends Controller
 
             $product->update([
                 "name" => $request->name,
+                "sku" => $request->sku,
                 "description" => $request->description,
                 "price" => $request->price,
+                "sale_price" => $request->sale_price,
                 "stock_quantity" => $request->stock_quantity,
                 "category_id" => $request->category_id,
                 "brand_id" => $request->brand_id,

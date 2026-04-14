@@ -4,7 +4,7 @@
     </x-slot>
 
     <x-slot name="content">
-        <form class="space-y-6 mt-8" action="{{ route('admin.brands.update', $brand->id) }}" method="POST" id="brandForm-{{ $brand->id }}"
+        <form class="space-y-6" action="{{ route('admin.brands.update', $brand->id) }}" method="POST" id="brandForm-{{ $brand->id }}"
             enctype="multipart/form-data">
             @csrf
             @method('put')
@@ -24,6 +24,22 @@
                     class="px-4 py-3 bg-gray-100 w-full text-slate-900 text-sm border-none focus:outline-blue-600 focus:bg-transparent rounded-lg"
                     rows="3">{{  $brand->description }}</textarea>
             </div>
+            <div>
+                <label class="text-slate-900 text-sm mb-2 block">Trạng thái</label>
+                <select name="status" required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                    <option value="1" {{ $brand->status == 1 ? 'selected' : '' }}>Hiển thị</option>
+                    <option value="0" {{ $brand->status == 0 ? 'selected' : '' }}>Ẩn</option>
+                </select>
+            </div>
+            <div>
+                <div class="form-group mb-3">
+                    <label for="logo" class="block text-sm font-medium text-gray-700 mb-1">Chọn
+                        ảnh đại diện của thương hiệu<span class="text-red-500">*</span></label>
+                    <input type="file" class="filepond-logo-{{ $brand->id }}" name="logo"
+                        accept="image/png, image/jpeg, image/jpg">
+                </div>
+            </div>
         </form>
     </x-slot>
 
@@ -38,3 +54,49 @@
         </button>
     </x-slot>
 </x-my-modal>
+
+<script>
+    window.addEventListener('open-modal', function (event) {
+        if (event.detail === 'edit-brand-modal-{{ $brand->id }}') {
+            setTimeout(() => {
+                const loadData = {
+                    load: (source, load, error, progress, abort, headers) => {
+                        fetch(source)
+                            .then(response => {
+                                if (!response.ok) throw new Error('Network response was not ok');
+                                return response.blob();
+                            })
+                            .then(blob => load(blob))
+                            .catch(err => {
+                                console.error('FilePond load error:', err);
+                                error('Không thể tải ảnh');
+                            });
+                    }
+                };
+
+                // Thumbnail
+                const inputLogo = document.querySelector('.filepond-logo-{{ $brand->id }}');
+                if (inputLogo && !FilePond.find(inputLogo)) {
+                    const existingLogo = [];
+                    @if($brand->logo)
+                        existingLogo.push({
+                            source: '{{ asset("storage/" . $brand->logo) }}',
+                            options: { type: 'local' }
+                        });
+                    @endif
+
+                    FilePond.create(inputLogo, {
+                        labelIdle: 'Kéo thả hoặc <span class="filepond--label-action">Chọn ảnh</span>',
+                        storeAsFile: true,
+                        files: existingLogo,
+                        server: loadData,
+                        allowImagePreview: true,
+                        imagePreviewHeight: 170,
+                    });
+                }
+
+               
+            }, 100);
+        }
+    });
+</script>

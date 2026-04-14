@@ -14,7 +14,7 @@
                             class="text-red-500">*</span></label>
                     <input type="text" placeholder="Nhập tên sản phẩm..." name="name" required
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    
+
                 </div>
 
                 <div class="grid grid-cols-2 gap-4">
@@ -37,7 +37,7 @@
                         @endif
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Thương hiệu</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Thương hiệu <span class="text-red-500">*</span></label>
 
                         @if($brands->count() == 0)
                             <select name="" disabled
@@ -47,7 +47,7 @@
                         @else
                             <select name="brand_id" required
                                 class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
-                                <option value="">Chọn hãng</option>
+                                <option value="">Chọn hãng </option>
                                 @foreach ($brands as $brand)
                                     <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                                 @endforeach
@@ -64,8 +64,22 @@
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Số lượng kho</label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Số lượng kho <span
+                                class="text-red-500">*</span></label>
                         <input type="number" placeholder="0" name="stock_quantity" required min="0"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Giá Giảm (VNĐ)</label>
+                        <input type="number" placeholder="VD: 500000" name="sale_price" min="0"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Sku <span
+                                class="text-red-500">*</span></label>
+                        <input type="text" placeholder="VD: CGM-RZ-001" name="sku" required
                             class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                 </div>
@@ -75,7 +89,7 @@
             <div class="col-span-1 space-y-4">
                 <div class="form-group mb-3">
                     <label for="thumbnail" class="block text-sm font-medium text-gray-700 mb-1">Chọn
-                        ảnh đại diện:<span class="text-red-500">*</span></label>
+                        ảnh đại diện <span class="text-red-500">*</span></label>
                     <input type="file" class="filepond-thumbnail" name="thumbnail" required
                         accept="image/png, image/jpeg, image/jpg">
                 </div>

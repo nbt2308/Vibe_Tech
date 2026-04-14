@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\CategoryRequest;
 use App\Models\Category;
+use App\Models\Product;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use RealRashid\SweetAlert\Facades\Alert;
@@ -16,16 +18,25 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         $keyword = $request->search;
+        $status = $request->status;
         $query = Category::query();
 
         if (!empty($keyword)) {
             $query->where('name', 'LIKE', '%' . $keyword . '%');
         }
-
-        $categories = $query->latest() 
+        if($request->has('status') && $status !== null && $status !== ''){
+            $query->where('status', $status);
+        }
+        $categories = $query->latest()->withCount('products')
                             ->paginate(5) 
-                            ->appends(['search' => $keyword]); 
-        return view("admin.categories.index", compact("categories"));
+                            ->withQueryString(); 
+        $categories_status_true = Category::where('status', 1)->count();
+        $categories_status_false= Category::where('status', 0)->count();
+        //select count(*) from products join categories on products.category_id = categories.id
+        $categories_linked_products = Product::join('categories', 'products.category_id', '=', 'categories.id')->count();
+        //select count(*) from products join categories on products.category_id = categories.id where products.category_id = categories.id
+        
+        return view("admin.categories.index", compact("categories", "categories_status_true","categories_status_false", "categories_linked_products"));
     }
 
     /**
@@ -51,6 +62,7 @@ class CategoryController extends Controller
         Category::create([
             "name" => $request->name,
             "description" => $request->description,
+            "status"=> $request->status,
             "thumbnail" => $duongDanAnh,
         ]);
         return redirect()->back()->with('success', 'Thêm danh mục mới thành công');
@@ -96,6 +108,7 @@ class CategoryController extends Controller
         $category->name = $request->name;
         $category->description = $request->description;
         $category->thumbnail = $duongDanAnh;
+        $category->status = $request->status;
         $category->save();
         return redirect()->back()->with('success', 'Cập nhật danh mục thành công');
     }

@@ -5,7 +5,7 @@
     </x-slot>
 
     <x-slot name="content">
-        <form id="categoryForm-{{ $category->id }}" class="space-y-6 mt-8" action="{{ route('admin.categories.update', $category->id) }}" 
+        <form id="categoryForm-{{ $category->id }}" class="space-y-6" action="{{ route('admin.categories.update', $category->id) }}" 
             method="POST"
             enctype="multipart/form-data">
             @csrf
@@ -25,9 +25,17 @@
                     rows="3">{{  $category->description }}</textarea>
             </div>
             <div>
+                <label class="block text-sm font-medium text-gray-700 mb-2">Trạng thái</label>
+                <select name="status" required
+                    class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                    <option value="1" {{ $category->status == 1 ? 'selected' : '' }}>Hiển thị</option>
+                    <option value="0" {{ $category->status == 0 ? 'selected' : '' }}>Ẩn</option>
+                </select>
+            </div>
+            <div>
                 <div class="form-group mb-3">
                     <label for="thumbnail" class="block text-sm font-medium text-gray-700 mb-1">Chọn
-                        ảnh đại diện:<span class="text-red-500">*</span></label>
+                        ảnh đại diện<span class="text-red-500">*</span></label>
                     <input type="file" class="filepond-thumbnail-{{ $category->id }}" name="thumbnail"
                         accept="image/png, image/jpeg, image/jpg">
                 </div>

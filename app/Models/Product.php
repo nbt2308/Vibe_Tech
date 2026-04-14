@@ -11,13 +11,28 @@ class Product extends Model
         'category_id',
         'brand_id',
         'name',
+        'sku',
         'description',
         'thumbnail',
         'price',
+        'sale_price',
         'stock_quantity',
         'slug',
         'status',
     ];
+    public function getFormattedPriceAttribute()
+    {
+        return number_format($this->price, 0, ',', '.') . 'đ';
+    }
+
+    public function getFormattedSalePriceAttribute()
+    {
+        return $this->sale_price ? number_format($this->sale_price, 0, ',', '.') . 'đ' : null;
+    }
+    public function getFormattedStatusAttribute()
+    {
+        return $this->status == 1 ? 'Đang kinh doanh' : 'Ngừng bán';
+    }
     protected static function booted()
     {
         // Tự động chạy trước khi tạo mới (Create)

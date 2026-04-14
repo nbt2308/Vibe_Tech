@@ -11,7 +11,13 @@ class Category extends Model
         'description',
         'thumbnail',
         'slug',
+        'status',
     ];
+
+    public function getFormattedStatusAttribute()
+    {
+        return $this->status == 1 ? 'Đang hoạt động' : 'Ngừng hoạt động';
+    }
     protected static function booted()
     {
         // Tự động chạy trước khi tạo mới (Create)

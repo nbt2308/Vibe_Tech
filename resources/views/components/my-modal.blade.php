@@ -23,7 +23,7 @@
             </div>
         @endif
 
-        <div class="px-6 py-4 overflow-y-auto flex-1">
+        <div class="px-6 py-2 overflow-y-auto flex-1">
             {{ $content }}
         </div>
 

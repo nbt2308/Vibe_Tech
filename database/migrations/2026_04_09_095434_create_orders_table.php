@@ -13,9 +13,21 @@ return new class extends Migration
     {
         Schema::create('orders', function (Blueprint $table) {
             $table->id();
+            $table->string('order_code')->unique();
             $table->unsignedBigInteger('user_id');
             $table->decimal('total_amount', 10, 2);
+            $table->decimal('sub_total', 10, 2);
+            $table->decimal('shipping_fee', 10, 2);
             $table->string('status')->default('pending');
+            
+            $table->string('payment_method')->default('cod');
+            $table->string('payment_status')->default('unpaid');
+            $table->text('note')->nullable();
+
+            $table->string('customer_name')->nullable();
+            $table->string('customer_phone')->nullable();
+            $table->string('customer_email')->nullable();
+            $table->string('customer_address')->nullable();
             $table->timestamps();
 
             $table->foreign('user_id')->references('id')->on('users')

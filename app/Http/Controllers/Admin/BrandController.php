@@ -1,10 +1,13 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Http\Requests\BrandRequest;
 use App\Models\Brand;
+use App\Models\Product;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BrandController extends Controller
 {
@@ -14,16 +17,25 @@ class BrandController extends Controller
     public function index(Request $request)
     {
         $keyword = $request->search;
+        $status = $request->status;
         $query = Brand::query();
 
         if (!empty($keyword)) {
             $query->where('name', 'LIKE', '%' . $keyword . '%');
         }
+        if($request->has('status') && $status !== null && $status !== ''){
+            $query->where('status', $status);
+        }
 
-        $brands = $query->latest() 
+        $brands = $query->latest()->withCount('products')
                         ->paginate(5) 
-                        ->appends(['search' => $keyword]);
-        return view("admin.brands.index", compact("brands"));
+                        ->withQueryString();
+
+        $brands_status_true = Brand::where('status', 1)->count();
+        $brands_status_false= Brand::where('status', 0)->count();
+        //select count(*) from products join brands on products.brand_id = brands.id
+        $brands_linked_products = Product::join('brands', 'products.brand_id', '=', 'brands.id')->count();
+        return view("admin.brands.index", compact("brands", "brands_status_true", "brands_status_false", "brands_linked_products"));
     }
 
     /**
@@ -40,10 +52,15 @@ class BrandController extends Controller
     public function store(BrandRequest $request)
     {
         
-
+        $duongDanAnh = null;
+        if ($request->hasFile('logo')) {
+            $duongDanAnh = $request->file("logo")->store("brand-image", "public");
+        }
         Brand::create([
             "name" => $request->name,
             "description" => $request->description,
+            "status"=> $request->status,
+            "logo" => $duongDanAnh
         ]);
         return redirect()->back()->with('success', 'Thêm thương hiệu mới thành công');
     }
@@ -73,9 +90,19 @@ class BrandController extends Controller
         
 
         $brand = Brand::findOrFail($id);
-
+        $duongDanAnh = $brand->logo;
+        if ($request->hasFile('logo')) {
+            if ($brand->logo) {
+                if (Storage::disk('public')->exists($brand->logo)) {
+                    Storage::disk('public')->delete($brand->logo);
+                }
+            }
+            $duongDanAnh = $request->file("logo")->store("brand-image", "public");
+        }
         $brand->name = $request->name;
         $brand->description = $request->description;
+        $brand->status = $request->status;
+        $brand->logo = $duongDanAnh;
         $brand->save();
         return redirect()->back()->with('success', 'Cập nhật thương hiệu thành công');
     }
@@ -92,6 +119,10 @@ class BrandController extends Controller
     {
         $brand = Brand::findOrFail($id);
         $brand->delete();
+
+        if($brand->logo){
+            Storage::disk('public')->delete($brand->logo);
+        }
         return redirect()->back()->with('success', 'Xóa thương hiệu thành công');
     }
 }

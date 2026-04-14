@@ -44,10 +44,11 @@ class CategoryRequest extends FormRequest
                 'max:255',
                 Rule::unique('categories', 'name')->ignore($categoryId),
             ],
-            'description' => 'required|string|max:255'
+            'description' => 'required|string|max:255',
+            'status' => 'required|in:1,0'
         ];
 
-        if ($this->isMethod('post')) {
+        if ($this->isMethod('post') && !$categoryId) {
             $rules['thumbnail'] = 'required|image|mimes:jpeg,png,jpg,webp|max:2048';
         } else {
             $rules['new_thumbnail'] = 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048';
@@ -62,6 +63,9 @@ class CategoryRequest extends FormRequest
             'name.max' => 'Tên danh mục không được vượt quá 255 ký tự.',
             'name.unique' => 'Tên danh mục đã tồn tại.',
             'description.required' => 'Mô tả danh mục không được để trống.',
+            'description.max' => 'Mô tả danh mục không được vượt quá 255 ký tự.',
+            'status.required' => 'Trạng thái danh mục không được để trống.',
+            'status.in' => 'Trạng thái không hợp lệ.',
             'thumbnail.required' => 'Ảnh đại diện danh mục không được để trống.',
             'thumbnail.image' => 'Ảnh đại diện danh mục phải là file ảnh.',
             'thumbnail.mimes' => 'Ảnh đại diện danh mục phải có định dạng jpeg, png, jpg, gif.',

@@ -4,11 +4,13 @@
 
 @section('content')
     <!-- Hero Banner Carousel -->
-    @include('user.layouts.hero-banner')
-    
-    <!-- Featured Categories -->
-    @include('user.layouts.feature-categories')
+    <div class="my-5">
+        @include('user.layouts.hero-banner')
 
-    <!-- Product List -->
-    @include('user.products.index')
+        <!-- Featured Categories -->
+        @include('user.layouts.feature-categories')
+
+        <!-- Product List -->
+        @include('user.products.index')
+    </div>
 @endsection
