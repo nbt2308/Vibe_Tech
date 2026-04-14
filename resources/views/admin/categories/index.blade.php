@@ -189,8 +189,8 @@
                         </table>
 
                     </div>
-                    <div class="my-6 mx-6">
-                        {{ $categories->links() }}
+                    <div class="p-4">
+                        {{ $categories->onEachSide(1)->links() }}
                     </div>
 
                     @if($categories->count() > 0)

@@ -191,8 +191,8 @@
                         </table>
 
                     </div>
-                    <div class="my-6 mx-6">
-                        {{ $brands->links() }}
+                    <div class="p-4">
+                        {{ $brands->onEachSide(1)->links() }}
                     </div>
 
                     @if($brands->count() > 0)
