@@ -81,6 +81,23 @@
                                 </x-slot>
                             </x-dropdown>
                     </div>
+                     <div class="w-full md:w-32">
+                        <p class="text-sm text-gray-700 mb-1 font-medium">Hiển thị</p>
+                        <x-dropdown align="center" width="32">
+                            <x-slot name="trigger">
+                                <button class="w-full inline-flex items-center justify-between px-4 py-2 bg-white border border-gray-300 rounded-lg font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none transition duration-150">
+                                    <span class="truncate">{{ request('per_page') }} Danh mục</span>
+                                    <i class="ml-2 fas fa-chevron-down text-[10px]"></i>
+                                </button>
+                            </x-slot>
+                            <x-slot name="content">
+                                <x-dropdown-link href="{{ request()->fullUrlWithQuery(['per_page' => 5]) }}">5 danh mục</x-dropdown-link>
+                                <x-dropdown-link href="{{ request()->fullUrlWithQuery(['per_page' => 10]) }}">10 danh mục</x-dropdown-link>
+                                <x-dropdown-link href="{{ request()->fullUrlWithQuery(['per_page' => 20]) }}">20 danh mục</x-dropdown-link>
+                                <x-dropdown-link href="{{ request()->fullUrlWithQuery(['per_page' => 50]) }}">50 danh mục</x-dropdown-link>
+                            </x-slot>
+                        </x-dropdown>
+                    </div>
                 </div>
                 @include('admin.categories.create')
                 <button x-data @click="$dispatch('open-modal', 'create-category-modal');"

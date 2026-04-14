@@ -84,7 +84,7 @@
                     <x-searchbar action="{{ route('products') }}" placeholder="Nhập tên sản phẩm hoặc sku..." value="{{ request('search') }}" />
                 </div>
 
-                <div class="grid grid-cols-2 gap-3 md:flex md:gap-4">
+                <div class="grid grid-cols-3 gap-3 md:flex md:gap-4">
                     <div class="w-full md:w-48">
                         <p class="text-sm text-gray-700 mb-1 font-medium">Danh mục</p>
                         <x-dropdown align="right" width="48">
@@ -118,6 +118,23 @@
                                 <x-dropdown-link href="{{ request()->fullUrlWithQuery(['status' => null]) }}">Tất cả</x-dropdown-link>
                                 <x-dropdown-link href="{{ request()->fullUrlWithQuery(['status' => '1']) }}">Đang bán</x-dropdown-link>
                                 <x-dropdown-link href="{{ request()->fullUrlWithQuery(['status' => '0']) }}">Ngừng bán</x-dropdown-link>
+                            </x-slot>
+                        </x-dropdown>
+                    </div>
+                    <div class="w-full md:w-32">
+                        <p class="text-sm text-gray-700 mb-1 font-medium">Hiển thị</p>
+                        <x-dropdown align="center" width="32">
+                            <x-slot name="trigger">
+                                <button class="w-full inline-flex items-center justify-between px-4 py-2 bg-white border border-gray-300 rounded-lg font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none transition duration-150">
+                                    <span class="truncate">{{ request('per_page') }} sản phẩm</span>
+                                    <i class="ml-2 fas fa-chevron-down text-[10px]"></i>
+                                </button>
+                            </x-slot>
+                            <x-slot name="content">
+                                <x-dropdown-link href="{{ request()->fullUrlWithQuery(['per_page' => 5]) }}">5 sản phẩm</x-dropdown-link>
+                                <x-dropdown-link href="{{ request()->fullUrlWithQuery(['per_page' => 10]) }}">10 sản phẩm</x-dropdown-link>
+                                <x-dropdown-link href="{{ request()->fullUrlWithQuery(['per_page' => 20]) }}">20 sản phẩm</x-dropdown-link>
+                                <x-dropdown-link href="{{ request()->fullUrlWithQuery(['per_page' => 50]) }}">50 sản phẩm</x-dropdown-link>
                             </x-slot>
                         </x-dropdown>
                     </div>
@@ -164,7 +181,7 @@
                                     </td>
 
                                     <td class="py-4 px-4 font-bold text-red-500 whitespace-nowrap">
-                                        @if($product->sale_price && $product->sale_price < $product->price)
+                                        @if($product->formatted_sale_price> 0)
                                             <div class="flex flex-col">
                                                 <span class="text-sm font-bold text-red-600">
                                                     {{ $product->formatted_sale_price }}
@@ -173,7 +190,7 @@
                                                     {{ $product->formatted_price }}
                                                 </span>
                                                 <span class="text-[10px] font-medium text-green-600 bg-green-100 px-1 rounded w-fit mt-1">
-                                                    Giảm {{ round((($product->price - $product->sale_price) / $product->price) * 100) }}%
+                                                    Giảm {{ $product->formatted_sale_percent }}
                                                 </span>
                                             </div>
                                         @else
@@ -224,8 +241,8 @@
                 </div>
 
                 {{-- Phân trang --}}
-                <div class="p-4 border-t border-gray-50 bg-gray-50/30">
-                    {{ $products->links() }}
+                <div class="p-4">
+                    {{ $products->onEachSide(1)->links() }}
                 </div>
             </div>
 

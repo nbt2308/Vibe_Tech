@@ -19,6 +19,7 @@ class CategoryController extends Controller
     {
         $keyword = $request->search;
         $status = $request->status;
+        $perPage = $request->per_page ?? 5;
         $query = Category::query();
 
         if (!empty($keyword)) {
@@ -28,7 +29,7 @@ class CategoryController extends Controller
             $query->where('status', $status);
         }
         $categories = $query->latest()->withCount('products')
-                            ->paginate(5) 
+                            ->paginate($perPage) 
                             ->withQueryString(); 
         $categories_status_true = Category::where('status', 1)->count();
         $categories_status_false= Category::where('status', 0)->count();

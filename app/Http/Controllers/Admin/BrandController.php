@@ -18,6 +18,7 @@ class BrandController extends Controller
     {
         $keyword = $request->search;
         $status = $request->status;
+        $perPage = $request->per_page ?? 5;
         $query = Brand::query();
 
         if (!empty($keyword)) {
@@ -28,7 +29,7 @@ class BrandController extends Controller
         }
 
         $brands = $query->latest()->withCount('products')
-                        ->paginate(5) 
+                        ->paginate($perPage) 
                         ->withQueryString();
 
         $brands_status_true = Brand::where('status', 1)->count();

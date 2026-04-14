@@ -21,6 +21,7 @@ class ProductController extends Controller
         $keyword = $request->search;
         $status = $request->status;
         $categoryFilter = $request->category_id;
+        $perPage = $request->per_page ?? 5;
         $query = Product::query();
 
         if (!empty($keyword)) {
@@ -34,7 +35,7 @@ class ProductController extends Controller
             $query->where('category_id', $categoryFilter);
         }
         $products = $query->latest()->with('category', 'brand', 'productImages')
-            ->paginate(5)
+            ->paginate($perPage)
             ->withQueryString();
         $category = Category::where('status',1)->get();
         $brand = Brand::where('status',1)->get();
