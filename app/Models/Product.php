@@ -19,12 +19,19 @@ class Product extends Model
         'stock_quantity',
         'slug',
         'status',
+        'discount_percent'
     ];
     public function getFormattedPriceAttribute()
     {
         return number_format($this->price, 0, ',', '.') . 'đ';
     }
-
+    public function getFormattedSalePercentAttribute()
+    {
+        if ($this->discount_percent > 0) {
+            return $this->discount_percent . "%";
+        }
+        return null;
+    }
     public function getFormattedSalePriceAttribute()
     {
         return $this->sale_price ? number_format($this->sale_price, 0, ',', '.') . 'đ' : null;
@@ -48,6 +55,14 @@ class Product extends Model
                 $product->slug = Str::slug($product->name, '-');
             }
         });
+
+        static::saving(function ($product) {
+        if ($product->price > 0 && $product->sale_price > 0 && $product->sale_price < $product->price) {
+            $product->discount_percent = round((($product->price - $product->sale_price) / $product->price) * 100);
+        } else {
+            $product->discount_percent = 0;
+        }
+    });
     }
     public function category()
     {

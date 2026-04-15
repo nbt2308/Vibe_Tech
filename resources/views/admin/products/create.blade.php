@@ -12,12 +12,25 @@
                 <div>
                     <label class="block text-sm font-medium text-gray-700 mb-1">Tên sản phẩm <span
                             class="text-red-500">*</span></label>
-                    <input type="text" placeholder="Nhập tên sản phẩm..." name="name" required
+                    <input id="name" type="text" placeholder="Nhập tên sản phẩm..." name="name" required
                         class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
 
                 </div>
-
                 <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Đường dẫn slug </label>
+                        <input type="text" placeholder="" name="slug" disabled id="slug"
+                            class="w-full bg-gray-100 px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Sku <span
+                                class="text-red-500">*</span></label>
+                        <input type="text" placeholder="VD: CGM-RZ-001" name="sku" required
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+                <div class="grid grid-cols-2 gap-4">
+
                     <div>
                         <label class="block text-sm font-medium text-gray-700 mb-1">Danh mục <span
                                 class="text-red-500">*</span></label>
@@ -37,7 +50,8 @@
                         @endif
                     </div>
                     <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Thương hiệu <span class="text-red-500">*</span></label>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Thương hiệu <span
+                                class="text-red-500">*</span></label>
 
                         @if($brands->count() == 0)
                             <select name="" disabled
@@ -53,34 +67,6 @@
                                 @endforeach
                             </select>
                         @endif
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Giá bán (VNĐ) <span
-                                class="text-red-500">*</span></label>
-                        <input type="number" placeholder="VD: 1500000" name="price" required min="0"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Số lượng kho <span
-                                class="text-red-500">*</span></label>
-                        <input type="number" placeholder="0" name="stock_quantity" required min="0"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                </div>
-                <div class="grid grid-cols-2 gap-4">
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Giá Giảm (VNĐ)</label>
-                        <input type="number" placeholder="VD: 500000" name="sale_price" min="0"
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
-                    </div>
-                    <div>
-                        <label class="block text-sm font-medium text-gray-700 mb-1">Sku <span
-                                class="text-red-500">*</span></label>
-                        <input type="text" placeholder="VD: CGM-RZ-001" name="sku" required
-                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
                     </div>
                 </div>
             </div>
@@ -103,8 +89,34 @@
                         <option value="0">Ẩn (Tạm ngưng)</option>
                     </select>
                 </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Số lượng kho <span
+                            class="text-red-500">*</span></label>
+                    <input type="number" placeholder="0" name="stock_quantity" required min="0"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                </div>
             </div>
 
+            <div class="col-span-1 md:col-span-3 pt-6 p-6 bg-blue-50/50 rounded-2xl border border-blue-100 space-y-4">
+                <div class="grid grid-cols-3 gap-4">
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Giá bán (VNĐ) <span
+                                class="text-red-500">*</span></label>
+                        <input type="number" placeholder="VD: 1500000" name="price" required min="0" id="price"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Giá Giảm (VNĐ)</label>
+                        <input type="number" placeholder="VD: 500000" name="sale_price" min="0" id="sale_price"
+                            class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                    <div>
+                        <label class="block text-sm font-medium text-gray-700 mb-1">Giảm giá (%)</label>
+                        <input type="text" placeholder="0%" id="discount_percent" disabled name="discount_percent"
+                            class="w-full px-4 py-2 bg-gray-100 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500">
+                    </div>
+                </div>
+            </div>
 
             <div class="col-span-1 md:col-span-3 border-t border-gray-100 pt-6">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Mô tả chi tiết & Thông số
@@ -199,4 +211,39 @@
             }, 100);
         }
     });
+</script>
+<script>
+    const convertToSlug = (str) => {
+        str = str.toLowerCase();
+        str = str.normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        str = str.replace(/[đĐ]/g, 'd');
+        str = str.replace(/([^0-9a-z-\s])/g, '');
+        str = str.replace(/(\s+)/g, '-');
+        str = str.replace(/-+/g, '-');
+        str = str.replace(/^-+|-+$/g, '');
+
+        return str;
+    };
+
+    document.getElementById('name').addEventListener('keyup', function () {
+        let title = this.value;
+        document.getElementById('slug').value = convertToSlug(title);
+    });
+
+    //tính giảm giá
+    const calculateDiscount = () => {
+        const price = parseFloat(document.getElementById('price').value) || 0;
+        const salePrice = parseFloat(document.getElementById('sale_price').value) || 0;
+        const discountInput = document.getElementById('discount_percent');
+
+        if (price > 0 && salePrice > 0 && salePrice < price) {
+            const percent = Math.round(((price - salePrice) / price) * 100);
+            discountInput.value ='-'+ percent + '%';
+        } else {
+            discountInput.value = '0%';
+        }
+    };
+
+    document.getElementById('price').addEventListener('input', calculateDiscount);
+    document.getElementById('sale_price').addEventListener('input', calculateDiscount);
 </script>

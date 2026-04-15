@@ -81,6 +81,7 @@ class ProductController extends Controller
             "brand_id" => $request->brand_id,
             "thumbnail" => $duongDanAnh,
             "status" => $request->status,
+            "discount_percent"=> $request->discount_percent
         ]);
 
         if ($request->hasFile('gallery')) {
@@ -167,6 +168,7 @@ class ProductController extends Controller
                 "brand_id" => $request->brand_id,
                 "thumbnail" => $duongDanAnh,
                 "status" => $request->status,
+                "discount_percent"=> $request->discount_percent
             ]);
 
             $keptImages = [];

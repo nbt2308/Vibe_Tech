@@ -67,7 +67,8 @@ class ProductRequest extends FormRequest
             'stock_quantity' => 'required|integer|min:0',
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'required|exists:brands,id',
-            'status' => 'required|in:1,0'
+            'status' => 'required|in:1,0',
+            'discount_percent' => 'nullable|numeric|between:0,100',
         ];
 
 
@@ -92,8 +93,10 @@ class ProductRequest extends FormRequest
             'sku.max' => 'Mã sản phẩm không được vượt quá 255 ký tự.',
             'sku.unique' => 'Mã sản phẩm đã tồn tại.',
             'description.required' => 'Mô tả sản phẩm không được để trống.',
+            'price.numeric' => 'Giá gốc phải là số.',
             'price.required' => 'Giá sản phẩm không được để trống.',
             'price.min' => 'Giá sản phẩm phải lớn hơn hoặc bằng 0.',
+            'sale_price.numeric' => 'Giá giảm phải là số.',
             'sale_price.min' => 'Giá giảm phải lớn hơn hoặc bằng 0.',
             'sale_price.lt' => 'Giá giảm phải nhỏ hơn giá gốc.',
             'stock_quantity.required' => 'Số lượng tồn kho không được để trống.',
@@ -104,6 +107,8 @@ class ProductRequest extends FormRequest
             'brand_id.exists' => 'Thương hiệu sản phẩm không hợp lệ.',
             'status.required' => 'Trạng thái sản phẩm không được để trống.',
             'status.in' => 'Trạng thái không hợp lệ.',
+            'discount_percent.numeric'=> 'Giảm giá phải là số.',
+            'discount_percent.between'=> 'Giảm giá phải từ 0 đến 100%',
             'thumbnail.required' => 'Ảnh đại diện sản phẩm không được để trống.',
             'thumbnail.image' => 'Ảnh đại diện phải là file ảnh.',
             'thumbnail.mimes' => 'Ảnh đại diện phải có định dạng jpeg, png, jpg, gif.',
