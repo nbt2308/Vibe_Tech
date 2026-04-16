@@ -128,6 +128,46 @@
                 </div>
             </div>
 
+            <div
+                class="col-span-1 md:col-span-3 border-t border-blue-100 bg-blue-50/50 rounded-2xl border border-blue-100">
+                <div id="attribute-section" class="p-4">
+                    <div class="flex justify-between items-center mb-3 border-b border-gray-200 pb-3">
+                        <div>
+                            <h3 class="font-bold">Thông số kỹ thuật</h3>
+                            <p class="text-xs text-red-500">Mỗi thuộc tính chỉ được một giá trị.</p>
+                        </div>
+                        <button type="button" onclick="addNewRow({{ $product->id }})"
+                            class="bg-white text-gray-500 border border-slate-300 hover:bg-slate-100 px-3 py-1.5 rounded-lg font-bold flex items-center gap-1 transition shadow-sm">+
+                            Thêm dòng</button>
+                    </div>
+
+                    <div id="attribute-list-{{ $product->id }}">
+                        @if(isset($product) && $product->attributes)
+                            @foreach($product->attributes as $key => $value)
+                                <div class="flex gap-2 mb-2 attr-row">
+                                    <select name="attr_keys[]"
+                                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                                        @foreach($templates as $template)
+                                            <option value="{{ $template->name }}" {{ $key == $template->name ? 'selected' : '' }}>
+                                                {{ $template->display_name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                    <input type="text" name="attr_values[]" value="{{ $value }}"
+                                        class="border p-2 w-full border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                        placeholder="Giá trị">
+                                    <button type="button" onclick="this.parentElement.remove()" class="text-red-500"><i
+                                            class="fa-solid fa-trash"></i></button>
+
+                                </div>
+                            @endforeach
+                        @endif
+
+                    </div>
+
+                </div>
+            </div>
+
             <div class="col-span-1 md:col-span-3 border-t border-gray-100 pt-6">
                 <label class="block text-sm font-medium text-gray-700 mb-1">Mô tả chi tiết & Thông số
                     <span class="text-red-500">*</span></label>
@@ -154,7 +194,7 @@
             class="px-4 py-2 bg-white border border-gray-300 rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:text-gray-500 focus:outline-none focus:border-blue-300 focus:ring focus:ring-blue-200 active:text-gray-800 active:bg-gray-50 disabled:opacity-25 transition">
             Hủy bỏ
         </button>
-        <button onclick="document.getElementById('productForm-{{ $product->id }}').submit()" type="button"
+        <button type="submit" form="productForm-{{ $product->id }}"
             class="ml-3 px-4 py-2 bg-blue-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-blue-500 active:bg-blue-900 focus:outline-none focus:border-blue-900 focus:ring focus:ring-blue-300 disabled:opacity-25 transition">
             Cập nhật
         </button>
@@ -263,32 +303,7 @@
         }
     });
 </script>
-<script>
-    window.addEventListener('open-modal', function (event) {
-        if (event.detail === 'create-product-modal') {
-            setTimeout(() => {
-                const inputThumbnail = document.querySelector('.filepond-thumbnail');
-                FilePond.create(inputThumbnail, {
-                    labelIdle: 'Kéo thả ảnh vào đây hoặc <span class="filepond--label-action"> Chọn từ máy tính </span>',
-                    storeAsFile: true,
-                    allowImagePreview: true,
-                    imagePreviewHeight: 170,
-                });
 
-
-                const inputGallery = document.querySelector('.filepond-gallery');
-                FilePond.create(inputGallery, {
-                    labelIdle: 'Kéo thả ảnh vào đây hoặc <span class="filepond--label-action"> Chọn từ máy tính </span>',
-                    storeAsFile: true,
-                    allowMultiple: true,
-                    allowImagePreview: true,
-                    imagePreviewHeight: 170,
-                });
-
-            }, 100);
-        }
-    });
-</script>
 <script>
     (function () {
         // Hàm tính toán Slug
@@ -315,7 +330,7 @@
             const salePrice = parseFloat(salePriceEl.value) || 0;
 
             if (price > 0 && salePrice > 0 && salePrice < price) {
-                const percent = Math.round((((price - salePrice) / price) * 100),2);
+                const percent = Math.round((((price - salePrice) / price) * 100), 2);
                 discountInput.value = '-' + percent + '%';
             } else {
                 discountInput.value = '0%';
@@ -341,4 +356,21 @@
             }
         }, 500);
     })();
+</script>
+
+<script>
+    function addNewRow(productId) {
+        const html = `
+        <div class="flex gap-2 mb-2 attr-row">
+            <select name="attr_keys[]"
+                        class="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 bg-white">
+                        @foreach($templates as $template)
+                            <option value="{{ $template->name }}">{{ $template->display_name }}</option>
+                        @endforeach
+                    </select>
+            <input type="text" name="attr_values[]" class="border p-2 w-full border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500" placeholder="Giá trị">
+            <button type="button" onclick="this.parentElement.remove()" class="text-red-500"><i class="fa-solid fa-trash"></i></button>
+        </div>`;
+        document.getElementById('attribute-list-'+productId).insertAdjacentHTML('beforeend', html);
+    }
 </script>
