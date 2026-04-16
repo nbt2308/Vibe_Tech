@@ -31,12 +31,13 @@ class BrandController extends Controller
         $brands = $query->latest()->withCount('products')
                         ->paginate($perPage) 
                         ->withQueryString();
-
+        //tổng thương hiệu
+        $brand_total = Brand::count();
         $brands_status_true = Brand::where('status', 1)->count();
         $brands_status_false= Brand::where('status', 0)->count();
         //select count(*) from products join brands on products.brand_id = brands.id
         $brands_linked_products = Product::join('brands', 'products.brand_id', '=', 'brands.id')->count();
-        return view("admin.brands.index", compact("brands", "brands_status_true", "brands_status_false", "brands_linked_products"));
+        return view("admin.brands.index", compact("brands", "brands_status_true", "brands_status_false", "brands_linked_products", "brand_total"));
     }
 
     /**

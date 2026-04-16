@@ -17,7 +17,7 @@
                             </div>
                             <div>
                                 <dt class="text-sm font-medium text-slate-500 tracking-tight">Tổng sản phẩm</dt>
-                                <dd class="text-2xl font-bold text-slate-800 tracking-tight">{{ $products->total() }}</dd>
+                                <dd class="text-2xl font-bold text-slate-800 tracking-tight">{{ $product_total }}</dd>
                             </div>
                         </div>
                     </div>

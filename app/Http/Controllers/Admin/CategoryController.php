@@ -31,13 +31,15 @@ class CategoryController extends Controller
         $categories = $query->latest()->withCount('products')
                             ->paginate($perPage) 
                             ->withQueryString(); 
+        //tổng danh mục
+        $category_total = Category::count();
         $categories_status_true = Category::where('status', 1)->count();
         $categories_status_false= Category::where('status', 0)->count();
         //select count(*) from products join categories on products.category_id = categories.id
         $categories_linked_products = Product::join('categories', 'products.category_id', '=', 'categories.id')->count();
         //select count(*) from products join categories on products.category_id = categories.id where products.category_id = categories.id
         
-        return view("admin.categories.index", compact("categories", "categories_status_true","categories_status_false", "categories_linked_products"));
+        return view("admin.categories.index", compact("categories", "categories_status_true","categories_status_false", "categories_linked_products", "category_total"));
     }
 
     /**

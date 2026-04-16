@@ -13,7 +13,7 @@
                         </div>
                         <div >
                             <dt class="text-sm font-medium text-gray-500 truncate">Tổng danh mục</dt>
-                            <dd class="text-2xl font-bold text-gray-900">{{ $categories->total() }}</dd>
+                            <dd class="text-2xl font-bold text-gray-900">{{ $category_total }}</dd>
                         </div>
                     </div>
                 </div>

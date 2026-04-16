@@ -13,7 +13,7 @@
                         </div>
                         <div >
                             <dt class="text-sm font-medium text-gray-500 truncate">Tổng thương hiệu</dt>
-                            <dd class="text-2xl font-bold text-gray-900">{{ $brands->total() }}</dd>
+                            <dd class="text-2xl font-bold text-gray-900">{{ $brand_total }}</dd>
                         </div>
                     </div>
                 </div>
