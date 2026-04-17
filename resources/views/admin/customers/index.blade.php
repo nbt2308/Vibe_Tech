@@ -1,6 +1,6 @@
 @extends('admin.layouts.app')
 @section('title', 'Trang quản trị - Vibe Tech')
-@section('breadcrumb', 'Danh sách người dùng')
+@section('breadcrumb', 'Danh sách khách hàng')
 @section('placeholder-searchbar', 'Tìm kiếm người dùng...')
 
 @section('content')
@@ -13,11 +13,11 @@
                     <div class="p-5 flex items-center justify-between">
                         <div class="flex items-center">
                             <div class="p-3 rounded-full bg-blue-50 text-blue-600 mr-4">
-                                <i class="fa-solid fa-user-shield"></i>
+                                <i class="fa-solid fa-users"></i>
                             </div>
                             <div>
-                                <dt class="text-sm font-medium text-slate-500 tracking-tight">Tổng quản trị viên</dt>
-                                <dd class="text-2xl font-bold text-slate-800 tracking-tight">{{ $user_admin }}</dd>
+                                <dt class="text-sm font-medium text-slate-500 tracking-tight">Tổng khách hàng</dt>
+                                <dd class="text-2xl font-bold text-slate-800 tracking-tight">{{ $customer_total }}</dd>
                             </div>
                         </div>
                     </div>
@@ -30,7 +30,7 @@
                             </div>
                             <div>
                                 <dt class="text-sm font-medium text-slate-500 tracking-tight">Đang hoạt động</dt>
-                                <dd class="text-2xl font-bold text-slate-800 tracking-tight">{{ $user_status_true }}</dd>
+                                <dd class="text-2xl font-bold text-slate-800 tracking-tight">{{ $customer_status_true }}</dd>
                             </div>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                             </div>
                             <div>
                                 <dt class="text-sm font-medium text-slate-500 tracking-tight">Ngừng hoạt động</dt>
-                                <dd class="text-2xl font-bold text-slate-800 tracking-tight">{{ $user_status_false }}</dd>
+                                <dd class="text-2xl font-bold text-slate-800 tracking-tight">{{ $customer_status_false }}</dd>
                             </div>
                         </div>
                     </div>
@@ -53,20 +53,13 @@
             </div>
 
             <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 mb-6">
-                <h2 class="text-xl md:text-2xl font-bold text-gray-800">Danh sách người dùng</h2>
-                <div class="w-full lg:w-auto">
-                    @include('admin.users.create')
-                    <button x-data @click="$dispatch('open-modal', 'create-user-modal');" class="w-full flex items-center justify-center gap-2 bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-xl font-semibold transition-all shadow-lg shadow-blue-200 active:scale-95">
-                        <i class="fas fa-plus mr-1"></i>
-                        Thêm người dùng mới
-                    </button>
-                </div>
+                <h2 class="text-xl md:text-2xl font-bold text-gray-800">Danh sách khách hàng</h2>
             </div>
 
             <div class="flex flex-col space-y-4 md:space-y-0 md:flex-row md:items-end md:gap-4 mb-6">
                 <div class="flex-1 min-w-[150px]">
                     <p class="text-sm text-gray-700 mb-1 font-medium">Tìm kiếm</p>
-                    <x-searchbar action="{{ route('users') }}" placeholder="Nhập tên người dùng hoặc email..." value="{{ request('search') }}" />
+                    <x-searchbar action="{{ route('customers') }}" placeholder="Nhập tên khách hàng hoặc email..." value="{{ request('search') }}" />
                 </div>
 
                 <div class="grid grid-cols-1 gap-3 md:flex md:gap-4">
@@ -94,15 +87,15 @@
                         <x-dropdown align="center" width="48">
                             <x-slot name="trigger">
                                 <button class="w-full inline-flex items-center justify-between px-4 py-2 bg-white border border-gray-300 rounded-lg font-semibold text-xs text-gray-700 uppercase tracking-widest shadow-sm hover:bg-gray-50 focus:outline-none transition duration-150">
-                                    <span class="truncate">{{ request('per_page') }} người dùng</span>
+                                    <span class="truncate">{{ request('per_page') }} khách hàng</span>
                                     <i class="ml-2 fas fa-chevron-down text-[10px]"></i>
                                 </button>
                             </x-slot>
                             <x-slot name="content">
-                                <x-dropdown-link href="{{ request()->fullUrlWithQuery(['per_page' => 5]) }}">5 người dùng</x-dropdown-link>
-                                <x-dropdown-link href="{{ request()->fullUrlWithQuery(['per_page' => 10]) }}">10 người dùng</x-dropdown-link>
-                                <x-dropdown-link href="{{ request()->fullUrlWithQuery(['per_page' => 20]) }}">20 người dùng</x-dropdown-link>
-                                <x-dropdown-link href="{{ request()->fullUrlWithQuery(['per_page' => 50]) }}">50 người dùng</x-dropdown-link>
+                                <x-dropdown-link href="{{ request()->fullUrlWithQuery(['per_page' => 5]) }}">5 khách hàng</x-dropdown-link>
+                                <x-dropdown-link href="{{ request()->fullUrlWithQuery(['per_page' => 10]) }}">10 khách hàng</x-dropdown-link>
+                                <x-dropdown-link href="{{ request()->fullUrlWithQuery(['per_page' => 20]) }}">20 khách hàng</x-dropdown-link>
+                                <x-dropdown-link href="{{ request()->fullUrlWithQuery(['per_page' => 50]) }}">50 khách hàng</x-dropdown-link>
                             </x-slot>
                         </x-dropdown>
                     </div>
@@ -115,57 +108,42 @@
                         <thead>
                             <tr class="bg-gray-800 text-sm text-white uppercase tracking-wider">
                                 <th class="py-4 px-4 font-medium w-16 text-center">ID</th>
-                                <th class="py-4 px-4 font-medium">Người dùng</th>
+                                <th class="py-4 px-4 font-medium">Khách hàng</th>
                                 <th class="py-4 px-4 font-medium">Liên hệ & địa chỉ</th>
-                                <th class="py-4 px-4 font-medium">Vai trò</th>
                                 <th class="py-4 px-4 font-medium">Trạng thái</th>
                                 <th class="py-4 px-4 font-medium ">Thao tác</th>
                             </tr>
                         </thead>
                         <tbody class="divide-y divide-gray-100 text-sm text-gray-700">
-                            @forelse ($users as $user)
+                            @forelse ($customers as $customer)
                                 <tr class="hover:bg-gray-50/80 transition">
-                                    <td class="py-4 px-4 text-gray-400 text-center">#{{ $user->id }}</td>
+                                    <td class="py-4 px-4 text-gray-400 text-center">#{{ $customer->id }}</td>
                                     <td class="py-4 px-4">
                                         <div class="flex items-center gap-3">
                                             <div class="max-w-[200px] md:max-w-xs overflow-hidden">
-                                                <p class="font-semibold text-gray-900 truncate" title="{{ $user->name }}">{{ $user->name }}</p>
-                                                <p class="text-[12px] text-gray-400 truncate" title="{{ $user->email }}"><i class="fa-regular fa-envelope mr-1"></i>{{ $user->email }}</p>
+                                                <p class="font-semibold text-gray-900 truncate" title="{{ $customer->name }}">{{ $customer->name }}</p>
+                                                <p class="text-[12px] text-gray-400 truncate" title="{{ $customer->email }}"><i class="fa-regular fa-envelope mr-1"></i>{{ $customer->email }}</p>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="py-4 px-4">
                                         <div class="flex items-center gap-3">
                                             <div class="max-w-[200px] md:max-w-xs overflow-hidden">
-                                                <p class="text-gray-900 truncate" title="{{ $user->phone }}"><i class="fa-solid fa-phone mr-1 text-gray-500 text-[11px]"></i> {{ $user->phone }}</p>
-                                                <p class="text-gray-500 truncate line-clamp-2" title="{{ $user->address }}"><i class="fa-solid fa-location-dot text-gray-500 text-[11px] mr-1"></i> {{ $user->address??'Chưa cập nhật' }}</p>
+                                                <p class="text-gray-900 truncate" title="{{ $customer->phone }}"><i class="fa-solid fa-phone mr-1 text-gray-500 text-[11px]"></i> {{ $customer->phone }}</p>
+                                                <p class="text-gray-500 truncate line-clamp-2" title="{{ $customer->address }}"><i class="fa-solid fa-location-dot text-gray-500 text-[11px] mr-1"></i> {{ $customer->address??'Chưa cập nhật' }}</p>
                                             </div>
                                         </div>
                                     </td>
-                                    <td class="py-4 px-4 font-bold whitespace-nowrap">
-                                        @if($user->user_type == 1)
-                                            <span class="w-fit inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium bg-purple-100 text-purple-700">
-                                                <i class="fa-solid fa-user-shield"></i> {{ $user->formatted_user_type }}                                                
-                                            </span>
-                                        @else
-                                            <span class="w-fit inline-flex items-center gap-1.5 px-2 py-1 rounded-full text-xs font-medium bg-blue-100 text-blue-700">
-                                                <i class="fa-solid fa-user"></i> {{ $user->formatted_user_type }}
-                                            </span>
-                                        @endif
-                                    </td>
                                     <td class="py-4 px-4">
-                                        @if($user->status === 1)
-                                                <span class="px-2 py-1 rounded-full text-[10px] font-bold bg-green-100 text-green-700 uppercase">{{ $user->formatted_status }}</span>
+                                        @if($customer->status === 1)
+                                                <span class="px-2 py-1 rounded-full text-[10px] font-bold bg-green-100 text-green-700 uppercase">{{ $customer->formatted_status }}</span>
                                             @else
-                                                <span class="px-2 py-1 rounded-full text-[10px] font-bold bg-red-100 text-red-700 uppercase">{{ $user->formatted_status }}</span>
+                                                <span class="px-2 py-1 rounded-full text-[10px] font-bold bg-red-100 text-red-700 uppercase">{{ $customer->formatted_status }}</span>
                                             @endif
                                     </td>
-                                    <td class="py-4 px-4 text-right space-x-1 whitespace-nowrap">
-                                        <button x-data @click="$dispatch('open-modal', 'edit-user-modal-{{ $user->id }}');" class="text-blue-600 hover:bg-blue-50 rounded-lg p-2 transition-colors" title="Chỉnh sửa">
-                                            <i class="fas fa-edit"></i>
-                                        </button>
-                                        <button x-data @click="$dispatch('open-modal', 'delete-user-modal-{{ $user->id }}');" class="text-red-600 hover:bg-red-50 rounded-lg p-2 transition-colors" title="Xóa người dùng">
-                                            <i class="fas fa-trash-alt"></i>
+                                    <td class="py-4 px-4 space-x-1 whitespace-nowrap">
+                                        <button x-data @click="$dispatch('open-modal', 'show-customer-modal-{{ $customer->id }}');" class="text-blue-600 hover:bg-blue-50 rounded-lg p-2 transition-colors" title="Xem chi tiết">
+                                            <i class="fas fa-eye"></i>
                                         </button>
                                     </td>
                                 </tr>
@@ -174,7 +152,7 @@
                                     <td colspan="8" class="py-20 text-center">
                                         <div class="flex flex-col items-center justify-center text-gray-400">
                                             <i class="fa-solid fa-box-open text-5xl mb-4 opacity-20"></i>
-                                            <p class="italic">Không tìm thấy người dùng nào phù hợp.</p>
+                                            <p class="italic">Không tìm thấy khách hàng nào phù hợp.</p>
                                         </div>
                                     </td>
                                 </tr>
@@ -185,13 +163,12 @@
 
                 {{-- Phân trang --}}
                 <div class="p-4">
-                    {{ $users->onEachSide(1)->links() }}
+                    {{ $customers->onEachSide(1)->links() }}
                 </div>
             </div>
 
-            @foreach ($users as $user)
-                @include('admin.users.edit', ['user' => $user])
-                @include('admin.users.delete', ['user' => $user])
+            @foreach ($customers as $customer)
+                @include('admin.customers.show', ['customer' => $customer])
             @endforeach
 
         </div>

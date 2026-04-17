@@ -36,12 +36,19 @@ class User extends Authenticatable
         'address',
         'status',
     ];
-
+    public function getFormattedStatusAttribute()
+    {
+        return $this->status == 1 ? 'Hoạt động' : 'Tạm khóa';
+    }
+    public function getFormattedUserTypeAttribute()
+    {
+        return $this->user_type == 1 ? 'Quản trị viên' : 'Khách hàng';
+    }
     public function wishlists()
     {
         return $this->hasMany(Wishlist::class);
     }
-    
+
     public function orders()
     {
         return $this->hasMany(Order::class);
@@ -86,5 +93,5 @@ class User extends Authenticatable
         ];
     }
 
-    
+
 }
