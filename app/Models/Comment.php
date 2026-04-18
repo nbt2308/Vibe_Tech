@@ -14,6 +14,10 @@ class Comment extends Model
         'product_id',
     ];
 
+    public function getFormattedStatusAttribute()
+    {
+        return $this->comment_status == 1 ? 'Hiển thị' : 'Đã ẩn';
+    }
     public function user()
     {
         return $this->belongsTo(User::class);
