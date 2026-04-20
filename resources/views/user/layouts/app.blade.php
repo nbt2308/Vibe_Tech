@@ -9,6 +9,7 @@
         <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <title>@yield('title', 'Vibe Tech')</title>
     <script>
         tailwind.config = {
@@ -25,10 +26,10 @@
         }
     </script>
     </head>
-<body>
+<body class="min-h-screen flex flex-col">
     @include('user.layouts.header')
 
-    <main>
+    <main class="flex-grow my-5">
         @yield('content')
     </main>
 
@@ -43,41 +44,71 @@
 
         // Hàm Mở Menu
         function openMenu() {
-            // Xóa class invisible để hiển thị khối
             mobileMenu.classList.remove('invisible');
             
-            // Ép trình duyệt render trước khi chạy hiệu ứng transition
             requestAnimationFrame(() => {
-                // Làm đậm nền đen
                 menuOverlay.classList.replace('opacity-0', 'opacity-100');
-                // Kéo khung nội dung từ trái (-100%) vào giữa (0%)
                 menuContent.classList.replace('-translate-x-full', 'translate-x-0');
             });
             
-            // Ngăn người dùng cuộn trang web ở dưới khi đang mở menu
             document.body.style.overflow = 'hidden';
         }
 
         // Hàm Đóng Menu
         function closeMenu() {
-            // Làm mờ nền đen
             menuOverlay.classList.replace('opacity-100', 'opacity-0');
-            // Đẩy khung nội dung ra ngoài rìa trái
             menuContent.classList.replace('translate-x-0', '-translate-x-full');
             
-            // Đợi hiệu ứng trượt kết thúc (300ms) rồi mới ẩn hẳn khối
             setTimeout(() => {
                 mobileMenu.classList.add('invisible');
             }, 300);
             
-            // Trả lại thanh cuộn cho trang web
             document.body.style.overflow = '';
         }
 
-        // Gắn sự kiện click
         mobileMenuBtn.addEventListener('click', openMenu);
         closeMenuBtn.addEventListener('click', closeMenu);
-        // Bấm ra nền đen mờ ngoài menu cũng sẽ đóng menu
         menuOverlay.addEventListener('click', closeMenu);
     </script> 
+    <script>
+        const Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+                toast.onmouseenter = Swal.stopTimer;
+                toast.onmouseleave = Swal.resumeTimer;
+            }
+        });
+        @if($errors->any())
+            let errorMessages = `
+                    <ul style="text-align: left; margin-left: 15px; font-size: 14px;">
+                        @foreach($errors->all() as $error)
+                            <li>-{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                `;
+
+            Toast.fire({
+                icon: 'error',
+                title: 'Có lỗi xảy ra!',
+                html: errorMessages //hiển thị dạng danh sách bằng html
+            });
+        @endif
+        @if(session('success'))
+            Toast.fire({
+                icon: 'success',
+                title: "{{ session('success') }}"
+            });
+        @endif
+
+        @if(session('error'))
+            Toast.fire({
+                icon: 'error',
+                title: "{{ session('error') }}"
+            });
+        @endif
+    </script>
 </html>

@@ -92,6 +92,15 @@ class User extends Authenticatable
             'password' => 'hashed',
         ];
     }
+    public function carts()
+    {
+        return $this->hasOne(Carts::class);
+    }
+    public function cartItemCount()
+    {
+        $cart = $this->carts; // Quan hệ 1-1 với bảng carts
+        return $cart ? $cart->cart_items()->sum('quantity') : 0;
+    }
 
 
 }

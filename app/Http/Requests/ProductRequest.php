@@ -63,16 +63,20 @@ class ProductRequest extends FormRequest
             ],
             'description' => 'required|string',
             'price' => 'required|numeric|min:0|decimal:0,2',
-            'sale_price'=> 'nullable|numeric|min:0|decimal:0,2|lt:price',
+            'sale_price' => 'nullable|numeric|min:0|decimal:0,2|lt:price',
             'stock_quantity' => 'required|integer|min:0',
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'required|exists:brands,id',
             'status' => 'required|in:1,0',
             'discount_percent' => 'nullable|numeric|between:0,100',
+            'attr_keys' => 'nullable|array',
+            'attr_keys.*' => 'required|string',
+            'attr_values' => 'nullable|array',
+            'attr_values.*' => 'required|string|max:255',
         ];
 
 
-        if ($this->isMethod('post') && !$productId) {
+        if ($this->isMethod('post')) {
             $rules['thumbnail'] = 'required|image|mimes:jpeg,png,jpg,webp|max:2048';
         } else {
             $rules['new_thumbnail'] = 'nullable|image|mimes:jpeg,png,jpg,webp|max:2048';
@@ -107,8 +111,8 @@ class ProductRequest extends FormRequest
             'brand_id.exists' => 'Thương hiệu sản phẩm không hợp lệ.',
             'status.required' => 'Trạng thái sản phẩm không được để trống.',
             'status.in' => 'Trạng thái không hợp lệ.',
-            'discount_percent.numeric'=> 'Giảm giá phải là số.',
-            'discount_percent.between'=> 'Giảm giá phải từ 0 đến 100%',
+            'discount_percent.numeric' => 'Giảm giá phải là số.',
+            'discount_percent.between' => 'Giảm giá phải từ 0 đến 100%',
             'thumbnail.required' => 'Ảnh đại diện sản phẩm không được để trống.',
             'thumbnail.image' => 'Ảnh đại diện phải là file ảnh.',
             'thumbnail.mimes' => 'Ảnh đại diện phải có định dạng jpeg, png, jpg, gif.',
@@ -116,6 +120,8 @@ class ProductRequest extends FormRequest
             'gallery.image' => 'Ảnh gallery phải là file ảnh.',
             'gallery.mimes' => 'Ảnh gallery phải có định dạng jpeg, png, jpg, webp.',
             'gallery.max' => 'Ảnh gallery không được vượt quá 2MB.',
+            'attr_keys.*.required' => 'Loại thuộc tính không được để trống.',
+            'attr_values.*.required' => 'Giá trị thuộc tính không được để trống.',
         ];
     }
 

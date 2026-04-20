@@ -42,6 +42,23 @@ class CommentObserver
     public function updated(Comment $comment): void
     {
         //
+        if ($comment->isDirty('status') && $comment->status === 0) {
+            $user = $comment->user;
+
+            // Chỉ xét user tồn tại, là khách hàng (user_type = 0) và tài khoản chưa bị khóa (status != 0)
+            if ($user && $user->user_type == 0 && $user->status != 0) {
+                
+                
+                $commentCount = Comment::where('user_id', $user->id)
+                                    ->where('status', 0)
+                                    ->count();
+
+                // Nếu bình luận từ 5 bình luận trở lên -> Khóa tài khoản
+                if ($commentCount >= 5) {
+                    $user->update(['status' => 0]);
+                }
+            }
+        }
     }
 
     /**

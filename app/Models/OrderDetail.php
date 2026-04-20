@@ -14,6 +14,14 @@ class OrderDetail extends Model
         'unit_price',
     ];
 
+    public function getFormattedUnitPriceAttribute()
+    {
+        return $this->unit_price ? number_format($this->unit_price, 0, ',', '.') . 'đ' : null;
+    }
+    public function getFormattedTotalPriceAttribute()
+    {
+        return $this->quantity * $this->unit_price ? number_format($this->quantity * $this->unit_price, 0, ',', '.') . 'đ' : null;
+    }
     //1 chi tiết đơn hàng thuộc về 1 đơn hàng
     public function order()
     {

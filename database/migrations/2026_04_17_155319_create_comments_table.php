@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->text('comment_content');
             $table->tinyInteger('comment_rating')->nullable(); // Đánh giá sao 1-5, nullable
-            $table->boolean('comment_status')->default(false); // FALSE = chưa duyệt, TRUE = đã duyệt
-            $table->timestamp('comment_created_at')->useCurrent();
+            $table->boolean('comment_status')->default(false);
+            $table->timestamps();
 
             // Khóa ngoại
             $table->unsignedBigInteger('user_id')->nullable();

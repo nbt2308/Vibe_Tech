@@ -19,7 +19,11 @@ class Product extends Model
         'stock_quantity',
         'slug',
         'status',
-        'discount_percent'
+        'discount_percent',
+        'attributes'
+    ];
+    protected $casts = [
+        'attributes' => 'array',
     ];
     public function getFormattedPriceAttribute()
     {
@@ -38,7 +42,13 @@ class Product extends Model
     }
     public function getFormattedStatusAttribute()
     {
-        return $this->status == 1 ? 'Đang kinh doanh' : 'Ngừng bán';
+        return $this->status == 1 ? 'Còn hàng' : 'Hết hàng';
+    }
+    public function getAverageRatingAttribute()
+    {
+        return round($this->comments()
+            ->where('comment_status', true)
+            ->avg('comment_rating'), 1) ?? 0; 
     }
     protected static function booted()
     {
@@ -57,12 +67,12 @@ class Product extends Model
         });
 
         static::saving(function ($product) {
-        if ($product->price > 0 && $product->sale_price > 0 && $product->sale_price < $product->price) {
-            $product->discount_percent = round((($product->price - $product->sale_price) / $product->price) * 100);
-        } else {
-            $product->discount_percent = 0;
-        }
-    });
+            if ($product->price > 0 && $product->sale_price > 0 && $product->sale_price < $product->price) {
+                $product->discount_percent = round((($product->price - $product->sale_price) / $product->price) * 100);
+            } else {
+                $product->discount_percent = 0;
+            }
+        });
     }
     public function category()
     {

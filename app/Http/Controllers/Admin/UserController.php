@@ -40,7 +40,7 @@ class UserController extends Controller
         //user còn hoạt động
         $user_status_true = User::where('user_type', 1)->where('status', 1)->count();
         //user ngưng hoạt động
-        $user_status_false = User::where('user_type', 1)->where('status', 0)->count();  
+        $user_status_false = User::where('user_type', 1)->where('status', 0)->count();
         return view("admin.users.index", compact("users", "user_total", "user_admin", "user_staff", "user_status_true", "user_status_false"));
     }
 
@@ -68,6 +68,9 @@ class UserController extends Controller
     public function Update(UserRequest $request, $id)
     {
         $user = User::findOrFail($id);
+        if ($user->id === auth()->id() && $request->status == 0) {
+            return redirect()->back()->with('error', 'Bạn không thể tự khóa tài khoản của chính mình!');
+        }
         $user->update([
             "name" => $request->name,
             "phone" => $request->phone,

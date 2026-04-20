@@ -34,14 +34,22 @@
                     <a href="{{ route('users') }}"
                         class="text-sm flex items-center font-medium hover:text-blue-600 transition-all
                         {{ request()->routeIs('users') ? 'text-blue-600' : 'text-slate-800' }}">
-                        <i class="fa-solid fa-users mr-3"></i>
-                        <span>Danh sách người dùng</span>
+                        <i class="fa-solid fa-user-shield mr-3"></i>
+                        <span>Danh sách quản trị viên</span>
                     </a>
                 </li>
                 <li>
-                    <a href="javascript:void(0)"
+                    <a href="{{ route('customers') }}"
                         class="text-sm flex items-center font-medium hover:text-blue-600 transition-all
-                        {{ request()->routeIs('comments.index') ? 'text-blue-600' : 'text-slate-800' }}">
+                        {{ request()->routeIs('customers') ? 'text-blue-600' : 'text-slate-800' }}">
+                        <i class="fa-solid fa-users mr-3"></i>
+                        <span>Danh sách khách hàng</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="{{ route('comments') }}"
+                        class="text-sm flex items-center font-medium hover:text-blue-600 transition-all
+                        {{ request()->routeIs('comments') ? 'text-blue-600' : 'text-slate-800' }}">
                         <i class="fa-solid fa-comment-dots mr-3"></i>
                         <span>Bình luận</span>
                     </a>
@@ -78,6 +86,14 @@
                         <span>Thương hiệu</span>
                     </a>
                 </li>
+                <li>
+                    <a href="{{ route('templates') }}"
+                        class="text-sm flex items-center font-medium hover:text-blue-600 transition-all
+                        {{ request()->routeIs('templates') ? 'text-blue-600' : 'text-slate-800' }}">
+                        <i class="fa-brands fa-buffer mr-3"></i>
+                        <span>Thuộc tính</span>
+                    </a>
+                </li>
             </ul>
         </div>
 
@@ -87,7 +103,7 @@
             <h4 class="text-sm text-slate-500 mb-4">Bán hàng</h4>
             <ul class="space-y-4 px-2 flex-1">
                 <li>
-                    <a href="javascript:void(0)"
+                    <a href="{{ route('orders') }}"
                         class="text-slate-800 text-sm flex items-center font-medium hover:text-blue-600 transition-all">
                         <i class="fa-solid fa-cart-shopping mr-3"></i>
                         <span>Đơn hàng</span>
@@ -98,13 +114,6 @@
 
         <div class="mt-4">
             <ul class="space-y-4 px-2">
-                <li>
-                    <a href="{{ route('profile.show') }}"
-                        class="text-slate-800 text-sm flex items-center font-medium hover:text-blue-600 transition-all">
-                        <i class="fa-solid fa-address-card mr-3"></i>
-                        <span>Profile</span>
-                    </a>
-                </li>
                 <li>
                     <form method="POST" action="{{ route('logout') }}" x-data>
                         @csrf

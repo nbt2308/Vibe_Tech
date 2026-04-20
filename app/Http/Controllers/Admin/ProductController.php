@@ -4,11 +4,13 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\ProductRequest;
+use App\Models\AttributeTemplates;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Product;
 use App\Models\ProductImage;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -37,16 +39,18 @@ class ProductController extends Controller
         $products = $query->latest()->with('category', 'brand', 'productImages')
             ->paginate($perPage)
             ->withQueryString();
-        $category = Category::where('status',1)->get();
-        $brand = Brand::where('status',1)->get();
-
+        $category = Category::where('status', 1)->get();
+        $brand = Brand::where('status', 1)->get();
+        $templates = AttributeTemplates::all();
+        //tổng sản phẩm
+        $product_total = Product::count();
         //product còn bán
         $product_status_true = Product::where('status', 1)->count();
         //product số lượng <10
         $product_stock_less_10 = Product::where('stock_quantity', '<', 10)->count();
         //product hết hàng
         $product_status_false = Product::where('status', 0)->count();
-        return view("admin.products.index", compact("products", "category", "brand", "product_status_true", "product_stock_less_10", "product_status_false"));
+        return view("admin.products.index", compact("products", "category", "brand", "product_status_true", "product_stock_less_10", "product_status_false", "templates","product_total"));
     }
 
     /**
@@ -65,10 +69,21 @@ class ProductController extends Controller
     public function store(ProductRequest $request)
     {
 
+        $attributes = [];
+        if ($request->has('attr_keys')) {
+            foreach ($request->attr_keys as $index => $key) {
+                if (!empty($key)) {
+                    $attributes[$key] = $request->attr_values[$index] ?? '';
+
+
+                }
+            }
+        }
         $duongDanAnh = null;
         if ($request->hasFile('thumbnail')) {
             $duongDanAnh = $request->file("thumbnail")->store("product-thumbnail", "public");
         }
+
 
         $product = Product::create([
             "name" => $request->name,
@@ -81,7 +96,8 @@ class ProductController extends Controller
             "brand_id" => $request->brand_id,
             "thumbnail" => $duongDanAnh,
             "status" => $request->status,
-            "discount_percent"=> $request->discount_percent
+            "discount_percent" => $request->discount_percent,
+            "attributes" => $attributes
         ]);
 
         if ($request->hasFile('gallery')) {
@@ -157,6 +173,14 @@ class ProductController extends Controller
                 $duongDanAnh = $request->file("thumbnail")->store("product-thumbnail", "public");
             }
 
+            $attributes = [];
+            if ($request->has('attr_keys')) {
+                foreach ($request->attr_keys as $index => $key) {
+                    if (!empty($key)) {
+                        $attributes[$key] = $request->attr_values[$index] ?? '';
+                    }
+                }
+            }
             $product->update([
                 "name" => $request->name,
                 "sku" => $request->sku,
@@ -168,7 +192,8 @@ class ProductController extends Controller
                 "brand_id" => $request->brand_id,
                 "thumbnail" => $duongDanAnh,
                 "status" => $request->status,
-                "discount_percent"=> $request->discount_percent
+                "discount_percent" => $request->discount_percent,
+                "attributes" => $attributes
             ]);
 
             $keptImages = [];

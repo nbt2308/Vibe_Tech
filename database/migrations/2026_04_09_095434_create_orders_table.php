@@ -21,7 +21,6 @@ return new class extends Migration
             $table->string('status')->default('pending');
             
             $table->string('payment_method')->default('cod');
-            $table->string('payment_status')->default('unpaid');
             $table->text('note')->nullable();
 
             $table->string('customer_name')->nullable();

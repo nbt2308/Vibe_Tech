@@ -1,5 +1,5 @@
 <!-- Navigation Menu -->
-<div class="bg-gray-800 hidden md:block">
+<div class="bg-gray-800 hidden md:block border-t border-gray-700">
     <div class="container mx-auto px-4">
         <ul class="flex space-x-8 text-sm font-medium text-white">
 
