@@ -82,6 +82,9 @@
                                     <x-dropdown-link href="{{ route('order.orderHistory') }}">
                                         {{ __('Đơn hàng') }}
                                     </x-dropdown-link>
+                                    <x-dropdown-link href="{{ route('wishlist.index') }}">
+                                        {{ __('Danh sách yêu thích') }}
+                                    </x-dropdown-link>
                                     <!-- Authentication -->
                                     <form method="POST" action="{{ route('logout') }}" x-data>
                                         @csrf

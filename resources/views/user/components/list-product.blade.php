@@ -15,10 +15,21 @@
                 </div>
 
                 <div class="absolute top-3 -right-12 group-hover:right-3 transition-all duration-300 flex flex-col gap-2">
-                    <button title="Yêu thích"
-                        class="w-8 h-8 bg-white shadow-md rounded-full flex items-center justify-center text-slate-400 hover:text-red-500 transition-colors">
-                        <i class="fa-regular fa-heart"></i>
-                    </button>
+                    {{-- Kiểm tra xem ID sản phẩm có nằm trong mảng wishlistIds không --}}
+                    @php
+                        $isWishlisted = in_array($product->id, $wishlistIds ?? []);
+                    @endphp
+                
+                    <form action="{{ route('wishlist.store', $product->id) }}" method="post">
+                        @csrf
+                        <button type="submit" title="{{ $isWishlisted ? 'Bỏ yêu thích' : 'Yêu thích' }}"
+                            class="w-10 h-10 bg-white shadow-lg rounded-full flex items-center justify-center transition-all duration-300 transform active:scale-95 {{ $isWishlisted ? 'text-red-500' : 'text-slate-400 hover:text-red-500' }}">
+
+                            {{-- Nếu đã thích: fa-solid (tim đặc), chưa thích: fa-regular (tim rỗng) --}}
+                            <i class="{{ $isWishlisted ? 'fa-solid fa-heart' : 'fa-regular fa-heart' }} text-lg"></i>
+
+                        </button>
+                    </form>
                 </div>
             </div>
 

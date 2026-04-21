@@ -2,7 +2,7 @@
 <section class="container mx-auto mb-12">
     <h2 class="text-center text-2xl font-bold mb-6 border-b pb-2">Danh Mục Nổi Bật</h2>
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-        @forelse($categories as $category)
+        @forelse($featured_categories as $category)
             <a href="{{ route('categories.show', $category->slug) }}"
                 class="bg-white rounded-xl p-6 text-center hover:shadow-lg transition duration-300 group border border-gray-100 flex flex-col items-center">
                 <div class="w-24 h-24 mb-4 flex items-center justify-center overflow-hidden">

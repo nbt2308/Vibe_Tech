@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Admin\CustomerController;
 use App\Http\Controllers\Client\CartsController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\WishlistController;
 use App\Http\Middleware\IsAdmin;
 use Illuminate\Support\Facades\Route;
 
@@ -41,6 +42,14 @@ Route::middleware([
     Route::get('/order-history', [OrderController::class, 'orderHistory'])->name('order.orderHistory');
     //Route huỷ đơn hàng (user)
     Route::put('/order/cancel/{id}', [OrderController::class, 'cancelOrder'])->name('order.cancel');
+
+    //Route trang danh sách yêu thích
+    Route::get('/wishlist', [WishlistController::class, 'index'])->name('wishlist.index');
+    //Route thêm sp vào danh sách yêu thích
+    Route::post('/wishlist/add/{productId}', [WishlistController::class, 'store'])->name('wishlist.store');
+    //Route xoá sp khỏi danh sách yêu thích
+    Route::get('/wishlist/delete/{productId}', [WishlistController::class, 'delete'])->name('wishlist.delete');
+
 });
 
 
