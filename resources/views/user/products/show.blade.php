@@ -15,14 +15,23 @@
                             <img src="{{ asset('storage/' . $product->thumbnail) }}" alt="{{ $product->name }}"
                                 class="w-full h-full object-cover" id="main-img" />
                         </div>
-                        <button type="button" class="absolute top-4 right-4 cursor-pointer">
-                            <svg xmlns="http://www.w3.org/2000/svg" width="20px" fill="#949393ff"
-                                class="mr-1 hover:fill-[#fa094eff]" viewBox="0 0 64 64">
-                                <path
-                                    d="M45.5 4A18.53 18.53 0 0 0 32 9.86 18.5 18.5 0 0 0 0 22.5C0 40.92 29.71 59 31 59.71a2 2 0 0 0 2.06 0C34.29 59 64 40.92 64 22.5A18.52 18.52 0 0 0 45.5 4ZM32 55.64C26.83 52.34 4 36.92 4 22.5a14.5 14.5 0 0 1 26.36-8.33 2 2 0 0 0 3.27 0A14.5 14.5 0 0 1 60 22.5c0 14.41-22.83 29.83-28 33.14Z"
-                                    data-original="#000000"></path>
-                            </svg>
-                        </button>
+                        <div class="absolute top-2 -right-5 group-hover:right-3 transition-all duration-300 flex flex-col gap-2">
+                            {{-- Kiểm tra xem ID sản phẩm có nằm trong mảng wishlistIds không --}}
+                            @php
+                                $isWishlisted = in_array($product->id, $wishlistIds ?? []);
+                            @endphp
+                        
+                            <form action="{{ route('wishlist.store', $product->id) }}" method="post">
+                                @csrf
+                                <button type="submit" title="{{ $isWishlisted ? 'Bỏ yêu thích' : 'Yêu thích' }}"
+                                    class="w-10 h-10 bg-white shadow-lg rounded-full flex items-center justify-center transition-all duration-300 transform active:scale-95 {{ $isWishlisted ? 'text-red-500' : 'text-slate-400 hover:text-red-500' }}">
+
+                                    {{-- Nếu đã thích: fa-solid (tim đặc), chưa thích: fa-regular (tim rỗng) --}}
+                                    <i class="{{ $isWishlisted ? 'fa-solid fa-heart' : 'fa-regular fa-heart' }} text-lg"></i>
+
+                                </button>
+                            </form>
+                        </div>
                     </div>
 
                     <div class="mt-4 flex flex-wrap justify-center gap-4 mx-auto">
