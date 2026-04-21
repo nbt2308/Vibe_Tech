@@ -27,11 +27,11 @@ class OrderObserver
             if ($user && $user->user_type == 0 && $user->status != 0) {
                 
                 // Đếm tổng số đơn đã huỷ của user này
-                $cancelCount = Order::where('user_id', $user->id)
-                                    ->where('status', 'cancelled')
-                                    ->whereColumn('updated_by', 'user_id')
-                                    ->count();
-
+                // $cancelCount = Order::where('user_id', $user->id)
+                //                     ->where('status', 'cancelled')
+                //                     ->whereColumn('updated_by', 'user_id')
+                //                     ->count();
+                $cancelCount = $user->orders()->where('status','cancelled')->count();
                 // Nếu huỷ từ 5 đơn trở lên -> Khóa tài khoản
                 if ($cancelCount >= 5) {
                     $user->update(['status' => 0]);

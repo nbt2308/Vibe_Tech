@@ -1,28 +1,95 @@
-<section class="container mx-auto px-4 mb-12 mt-5 md:mt-0">
-    <div class="relative rounded-2xl overflow-hidden bg-gray-900 h-64 md:h-96 flex items-center justify-center">
-        <!-- Hình ảnh thay thế nếu không hiển thị được -->
-        <img src="https://images.unsplash.com/photo-1593640408182-31c70c8268f5?ixlib=rb-4.0.3&auto=format&fit=crop&w=1920&q=80"
-            alt="Banner" class="absolute inset-0 w-full h-full object-cover opacity-60 z-0">
-        <div class="absolute inset-0 bg-gradient-to-r from-blue-900/90 to-indigo-900/80 z-0"></div>
+<div class="container mx-auto">
+    <div class="relative group/swiper px-4 md:px-0"> 
+        <div class="swiper productSwiper !pb-12 !pt-4"> 
+            <div class="swiper-wrapper">
+                @foreach($list_products as $product)
+                    <div class="swiper-slide h-auto"> 
+                        <div
+                            class="bg-white flex flex-col h-full rounded-2xl overflow-hidden border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-1 transition-all duration-300 group">
 
-        <div class="relative z-10 text-center text-white px-4">
-            <span class="bg-red-500 text-white text-xs font-bold uppercase px-3 py-1 rounded-full mb-4 inline-block">Mới
-                ra mắt</span>
-            <h1 class="text-3xl md:text-5xl font-bold mb-4">Logitech G Pro X Superlight 2</h1>
-            <p class="text-lg md:text-xl mb-6 text-gray-200">Trọng lượng siêu nhẹ, cảm biến HERO 2 mới nhất</p>
-            <a href="#"
-                class="bg-primary hover:bg-blue-600 text-white font-bold py-3 px-8 rounded-lg transition duration-300 inline-block">Mua
-                Ngay</a>
+                            <!-- Hình ảnh -->
+                            <div class="relative overflow-hidden aspect-[4/5]">
+                                <a href="{{ route('products.show', $product->slug) }}" class="block w-full h-full">
+                                    <img src="{{ asset('storage/' . $product->thumbnail) }}" alt="{{ $product->name }}"
+                                        class="w-full h-full object-cover object-top group-hover:scale-110 transition-transform duration-700 ease-out" />
+                                </a>
+
+                                
+                                <div class="absolute top-3 left-3">
+                                    <span
+                                        class="bg-blue-600 text-white text-[10px] font-bold px-2.5 py-1 rounded-lg uppercase tracking-wider">
+                                        New
+                                    </span>
+                                </div>
+
+                                <!-- Nút yêu thích -->
+                                <div
+                                    class="absolute top-3 -right-12 group-hover:right-3 transition-all duration-300 flex flex-col gap-2">
+                                    <!-- Kiểm tra xem ID sản phẩm có nằm trong mảng wishlistIds không -->
+                                    @php
+                                        $isWishlisted = in_array($product->id, $wishlistIds ?? []);
+                                    @endphp
+
+                                    <form action="{{ route('wishlist.store', $product->id) }}" method="post">
+                                        @csrf
+                                        <button type="submit" title="{{ $isWishlisted ? 'Bỏ yêu thích' : 'Yêu thích' }}"
+                                            class="w-10 h-10 bg-white shadow-lg rounded-full flex items-center justify-center transition-all duration-300 transform active:scale-95 {{ $isWishlisted ? 'text-red-500' : 'text-slate-400 hover:text-red-500' }}">
+
+                                            {{-- Nếu đã thích: fa-solid (tim đặc), chưa thích: fa-regular (tim rỗng) --}}
+                                            <i
+                                                class="{{ $isWishlisted ? 'fa-solid fa-heart' : 'fa-regular fa-heart' }} text-lg"></i>
+
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+
+                            <!-- Nội dung -->
+                            <div class="p-5 flex flex-col flex-grow bg-white">
+                                <a href="{{ route('products.show', $product->slug) }}" class="block flex-grow">
+                                    <h3
+                                        class="text-sm font-semibold text-slate-800 line-clamp-2 min-h-[40px] group-hover:text-blue-600 transition-colors">
+                                        {{ $product->name }}
+                                    </h3>
+
+                                    
+                                    <div class="mt-3 flex items-center justify-between">
+                                        <span class="text-lg font-bold text-slate-900">
+                                            {{ $product->sale_price>0?number_format($product->sale_price):number_format($product->price) }}đ
+                                        </span>
+                                        <div class="flex items-center gap-1 text-orange-400 text-[10px]">
+                                            <i class="fa-solid fa-star"></i>
+                                            <span class="text-slate-400 font-medium">{{ $product->averageRating }}</span>
+                                        </div>
+                                    </div>
+                                </a>
+
+                                <!-- Nút mua nhanh -->
+                                <div
+                                    class="mt-4 pt-4 border-t border-slate-50 opacity-0 translate-y-4 group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300">
+                                    <button
+                                        class="w-full bg-slate-900 text-white py-2.5 rounded-xl text-xs font-bold hover:bg-blue-600 transition-colors">
+                                        THÊM VÀO GIỎ
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
+            </div>
+
+
+
         </div>
 
-        <!-- Nút điều hướng Carousel (chỉ hiển thị mộc) -->
-        <button
-            class="absolute left-4 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white w-10 h-10 rounded-full flex items-center justify-center z-20">
-            <i class="fas fa-chevron-left"></i>
-        </button>
-        <button
-            class="absolute right-4 top-1/2 transform -translate-y-1/2 bg-black/30 hover:bg-black/50 text-white w-10 h-10 rounded-full flex items-center justify-center z-20">
-            <i class="fas fa-chevron-right"></i>
-        </button>
+
+        <div
+            class="swiper-button-next product-next !w-12 !h-12 !bg-red/90 backdrop-blur-sm !rounded-full !shadow-xl !text-blue-600 after:!text-base after:!font-bold transition-all -right-6 opacity-0 group-hover/swiper:opacity-100 group-hover/swiper:right-2 border border-slate-100">
+            <i class="fa-solid fa-chevron-right"></i>
+        </div>
+        <div
+            class="swiper-button-prev product-prev !w-12 !h-12 !bg-red/90 backdrop-blur-sm !rounded-full !shadow-xl !text-blue-600 after:!text-base after:!font-bold transition-all -left-6 opacity-0 group-hover/swiper:opacity-100 group-hover/swiper:left-2 border border-slate-100">
+            <i class="fa-solid fa-chevron-left"></i>
+        </div>
     </div>
-</section>
+</div>

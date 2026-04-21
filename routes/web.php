@@ -14,6 +14,8 @@ use App\Http\Controllers\Client\CartsController;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\WishlistController;
 use App\Http\Middleware\IsAdmin;
+use App\Http\Middleware\checkUserStatus;
+
 use Illuminate\Support\Facades\Route;
 
 // Route cho người dùng đã đăng nhập
@@ -21,7 +23,7 @@ Route::middleware([
     'auth:sanctum',
     config('jetstream.auth_session'),
     'verified',
-])->group(function () {
+])->middleware(['auth', checkUserStatus::class])->group(function () {
     //Route bình luận
     Route::post('/product/{productId}/comment', [CommentController::class, 'store'])->name('comment.store');
     Route::delete('/comment/{id}', [CommentController::class, 'destroy'])->name('comment.destroy');
@@ -64,11 +66,6 @@ Route::get('/categories/{slug}', [\App\Http\Controllers\Client\CategoryControlle
 //Route xem chi tiết sản phẩm
 Route::get('/products/{slug}', [\App\Http\Controllers\Client\ProductController::class, 'show'])->name('products.show');
 Route::get('/search', [\App\Http\Controllers\Client\ProductController::class, 'search'])->name('search');
-
-
-
-
-
 // Giới thiệu
 Route::get('/gioi-thieu', function () {
     return view('user.home.index');
@@ -78,8 +75,6 @@ Route::get('/gioi-thieu', function () {
 Route::get('/lien-he', function () {
     return view('user.home.index');
 })->name('contact');
-
-
 
 // ROUTE CHO ADMIN 
 Route::prefix('admin')->middleware(['auth', IsAdmin::class])->group(function () {

@@ -50,7 +50,9 @@ class AppServiceProvider extends ServiceProvider
         ])->where('status', 1)->take(4)->get());
         View::share('brands', Brand::where('status', 1)->get());
         View::share('categories', Category::where('status', 1)->get());
-
+        View::share('list_products', Product::where('status', 1)->take(10)->orderBy('created_at', 'desc')->get());
+        
+        
         //Đky observer
         Comment::observe(CommentObserver::class);
         Order::observe(OrderObserver::class);

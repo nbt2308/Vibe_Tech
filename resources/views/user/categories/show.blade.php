@@ -3,8 +3,6 @@
 @section('title', $category->name)
 
 @section('content')
-
-    @include('user.layouts.hero-banner')
     <h2 class="text-center text-2xl font-bold mb-6 pb-2">{{ $category->name }}</h2>
     <div class="container mx-auto my-6">
         <div class="flex">

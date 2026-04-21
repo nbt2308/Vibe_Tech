@@ -25,7 +25,7 @@ class CustomerController extends Controller
             $query->where('status', $status);
         }
         
-        $customers = $query->latest()
+        $customers = $query->latest()->with('orders')
             ->paginate($perPage)
             ->withQueryString();
         //tổng người dùng
