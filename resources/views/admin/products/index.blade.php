@@ -200,7 +200,11 @@
                                         @endif
                                     </td>
                                     <td class="py-4 px-4 font-semibold text-gray-500">
-                                        @if($product->stock_quantity < 10)
+                                        @if($product->stock_quantity === 0)
+                                            <span class="text-sm font-bold text-red-600">
+                                                {{ $product->stock_quantity }} (hết hàng)
+                                            </span>
+                                        @elseif($product->stock_quantity < 10)
                                             <span class="text-sm font-bold text-red-600">
                                                 {{ $product->stock_quantity }} (sắp hết)
                                             </span>

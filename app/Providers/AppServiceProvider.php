@@ -9,6 +9,7 @@ use App\Models\Order;
 use App\Models\Product;
 use App\Observers\CommentObserver;
 use App\Observers\OrderObserver;
+use App\Observers\ProductObserver;
 use Auth;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Cache;
@@ -56,5 +57,6 @@ class AppServiceProvider extends ServiceProvider
         //Đky observer
         Comment::observe(CommentObserver::class);
         Order::observe(OrderObserver::class);
+        Product::observe(ProductObserver::class);
     }
 }

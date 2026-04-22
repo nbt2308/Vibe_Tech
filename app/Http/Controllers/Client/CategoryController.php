@@ -15,6 +15,10 @@ class CategoryController extends Controller
         if ($request->has('brand_id')) {
             $query->whereIn('brand_id', $request->brand_id);
         }
+        if( $request->has('sort')) {
+            $sort = explode('|', $request->sort);
+            $query->orderBy($sort[0], $sort[1]);
+        }
         if ($request->has('price_range')) {
             $ranges = $request->price_range;
 

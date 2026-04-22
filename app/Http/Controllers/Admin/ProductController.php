@@ -50,7 +50,7 @@ class ProductController extends Controller
         $product_stock_less_10 = Product::where('stock_quantity', '<', 10)->count();
         //product hết hàng
         $product_status_false = Product::where('status', 0)->count();
-        return view("admin.products.index", compact("products", "category", "brand", "product_status_true", "product_stock_less_10", "product_status_false", "templates","product_total"));
+        return view("admin.products.index", compact("products", "category", "brand", "product_status_true", "product_stock_less_10", "product_status_false", "templates", "product_total"));
     }
 
     /**
@@ -68,7 +68,10 @@ class ProductController extends Controller
      */
     public function store(ProductRequest $request)
     {
-
+        //validate số lượng và trạng thái
+        if ($request->stock_quantity === "0" && $request->status === "1") {
+            return redirect()->back()->with('error', 'Số lượng và trạng thái không hợp lệ');
+        }
         $attributes = [];
         if ($request->has('attr_keys')) {
             foreach ($request->attr_keys as $index => $key) {
@@ -140,7 +143,9 @@ class ProductController extends Controller
     {
         //
         try {
-
+            if ($request->stock_quantity === "0" && $request->status === "1") {
+                return redirect()->back()->with('error', 'Số lượng và trạng thái không hợp lệ');
+            }
             //Validate nếu người dùng không up ảnh mới thì thumbnail và gallery sẽ là string
             $newThumbnail = [];
             $newGallery = [];

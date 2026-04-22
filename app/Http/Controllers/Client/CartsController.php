@@ -42,19 +42,28 @@ class CartsController extends Controller
         //
         $product = Product::findOrFail($productId);
         $finalPrice = ($product->sale_price > 0) ? $product->sale_price : $product->price;
-
+        $stock = $product->stock_quantity;
 
         $userId = Auth::user()->id;
         $cart = Carts::firstOrCreate(
             ['user_id' => $userId],
             ['created_at' => now()]
         );
+
         $cartItem = Cart_items::where('cart_id', $cart->id)
             ->where('product_id', $productId)
             ->first();
+
+        $currentInCart = $cartItem ? $cartItem->quantity : 0;
+        $newQuantityToAdd = $request->input('quantity', 1); // Mặc định là 1 nếu không truyền số lượng
+        $totalWant = $currentInCart + $newQuantityToAdd;
+
+        if ($totalWant > $stock) {
+            return redirect()->back()->with('error', "Số lượng trong giỏ hàng không được vượt quá số lượng tồn kho!");
+        }
+
         if ($cartItem) {
-            $cartItem->quantity += $request->quantity;
-            $cartItem->save();
+            $cartItem->update(['quantity' => $totalWant]);
         } else {
             $cartItem = Cart_items::create([
                 'cart_id' => $cart->id,
@@ -78,43 +87,41 @@ class CartsController extends Controller
     {
         $cartItem = Cart_items::findOrFail($cartItem_id);
         $stock = $cartItem->product->stock_quantity;
-        $currentQuantity= (int) $cartItem->quantity;
+        $currentQuantity = (int) $cartItem->quantity;
         // dd($request->all());
 
-        $newQuantity= (int) $request->quantity;
-        if ($newQuantity!== $cartItem->quantity) {
-            
-            if($newQuantity < 1){
+        $newQuantity = (int) $request->quantity;
+        if ($newQuantity !== $cartItem->quantity) {
+
+            if ($newQuantity < 1) {
                 $cartItem->delete();
                 return redirect()->back()->with('success', 'Đã xóa sản phẩm khỏi giỏ hàng!');
             }
-            if($newQuantity > $stock){
+            if ($newQuantity > $stock) {
                 return redirect()->back()->with('error', 'Số lượng không được vượt quá số lượng tồn kho!');
             }
             $cartItem->quantity = $newQuantity;
             $cartItem->save();
             return redirect()->back()->with('success', 'Đã cập nhật số lượng!');
-        } 
+        }
 
-        if($request->has('action')) {
+        if ($request->has('action')) {
             if ($request->action == 'increase') {
                 if ($currentQuantity < $stock) {
                     $cartItem->increment('quantity');
-                }
-                else{
+                } else {
                     return redirect()->back()->with('error', 'Số lượng không được vượt quá số lượng tồn kho!');
                 }
-            } elseif($request->action == 'decrease') {
-                if($currentQuantity > 1){
+            } elseif ($request->action == 'decrease') {
+                if ($currentQuantity > 1) {
                     $cartItem->decrement('quantity');
-                }
-                else{
+                } else {
                     $cartItem->delete();
                     return redirect()->back()->with('success', 'Đã xóa sản phẩm khỏi giỏ hàng!');
                 }
             }
         }
-         return redirect()->back();
+        return redirect()->back();
     }
 
     /**
