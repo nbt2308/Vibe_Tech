@@ -36,6 +36,9 @@ class ProductObserver
             // updateQuietly để không gây ra vòng lặp vô tận của Observer
             $product->updateQuietly(['status' => 0]);
         } 
+        else{
+            $product->updateQuietly(['status'=> 1]);
+        }
         
     }
 

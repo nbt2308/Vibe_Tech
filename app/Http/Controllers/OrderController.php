@@ -179,8 +179,8 @@ class OrderController extends Controller
 
         $validMoves = [
             'pending' => ['confirmed', 'cancelled'],
-            'confirmed' => ['shipping', 'cancelled'],
-            'shipping' => ['completed', 'cancelled'],
+            'confirmed' => ['shipping'],
+            'shipping' => ['completed'],
             'completed' => [],
             'cancelled' => [],
         ];

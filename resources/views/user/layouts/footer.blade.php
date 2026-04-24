@@ -1,11 +1,11 @@
 <!-- Footer -->
 <footer class="bg-dark text-gray-300 pt-12 pb-6 border-t-4 border-primary">
     <div class="container mx-auto px-4">
-        <div class="grid grid-cols-1 md:grid-cols-4 gap-8 mb-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8 flex justify-between">
             <!-- Về chúng tôi -->
             <div>
                 <a href="#" class="text-2xl font-bold text-white flex items-center gap-2 mb-4">
-                    <i class="fas fa-microchip text-primary"></i>
+                    <i class="fas fa-microchip"></i>
                     Vibe Tech
                 </a>
                 <p class="text-sm text-gray-400 mb-4">Hệ thống bán lẻ linh kiện điện tử, gaming gear và phụ kiện máy
@@ -23,27 +23,14 @@
                 </div>
             </div>
 
-            <!-- Chăm sóc khách hàng -->
-            <div>
-                <h3 class="text-white font-bold text-lg mb-4">Chăm Sóc Khách Hàng</h3>
-                <ul class="space-y-2 text-sm">
-                    <li><a href="#" class="hover:text-primary transition">Trung tâm trợ giúp</a></li>
-                    <li><a href="#" class="hover:text-primary transition">Hướng dẫn mua hàng</a></li>
-                    <li><a href="#" class="hover:text-primary transition">Chính sách bảo hành</a></li>
-                    <li><a href="#" class="hover:text-primary transition">Chính sách đổi trả</a></li>
-                    <li><a href="#" class="hover:text-primary transition">Theo dõi đơn hàng</a></li>
-                </ul>
-            </div>
-
             <!-- Danh mục -->
-            <div>
+            <div class="flex flex-col items-center">
                 <h3 class="text-white font-bold text-lg mb-4">Danh Mục</h3>
                 <ul class="space-y-2 text-sm">
-                    <li><a href="#" class="hover:text-primary transition">Bàn phím cơ</a></li>
-                    <li><a href="#" class="hover:text-primary transition">Chuột Gaming</a></li>
-                    <li><a href="#" class="hover:text-primary transition">Tai nghe gaming</a></li>
-                    <li><a href="#" class="hover:text-primary transition">Bàn ghế Ergonomic</a></li>
-                    <li><a href="#" class="hover:text-primary transition">Phụ kiện Setup</a></li>
+                    @foreach ($categories as $category)
+                        <li><a href="{{ route('categories.show', $category->slug) }}"
+                                class="hover:text-primary transition">{{ $category->name }}</a></li>
+                    @endforeach
                 </ul>
             </div>
 

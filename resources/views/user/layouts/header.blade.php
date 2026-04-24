@@ -1,5 +1,5 @@
 <!-- Header & Navigation -->
-<header class="bg-gray-800 shadow-sm sticky top-0 z-40 relative">
+<header class="bg-gray-800 shadow-sm sticky top-0 z-50 relative">
 
     <!-- 1. Header Chính -->
     <div class="container mx-auto px-4 py-3">

@@ -1,7 +1,10 @@
 <div class="bg-gray-50 w-full rounded-lg max-w-[280px] border-r border-gray-100 shrink-0 px-6 sm:px-8 py-6">
     <div class="flex items-center border-b border-gray-300 pb-2 mb-6">
         <h3 class="text-slate-900 text-lg font-semibold">Bộ lọc</h3>
-        <button type="button" onclick="clearAllFilters()" class="text-sm text-red-500 font-semibold ml-auto cursor-pointer">Xóa tất cả</button>
+        <button type="button" onclick="clearAllFilters()" class="text-sm text-red-500 font-semibold ml-auto cursor-pointer mr-4 md:mr-0">Xóa tất cả</button>
+        <button type="button" onclick="toggleFilter()" class="md:hidden text-gray-400 hover:text-red-500 cursor-pointer focus:outline-none">
+            <i class="fas fa-times text-xl"></i>
+        </button>
     </div>
 
     <div class="filter-options space-y-6">

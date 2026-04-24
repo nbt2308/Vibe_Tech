@@ -122,7 +122,7 @@
         loop: true,
         autoplay: {
             delay: 3000,
-            disableOnInteraction: false, // Tiếp tục chạy sau khi người dùng chạm vào
+            disableOnInteraction: false, 
         },
         navigation: {
             nextEl: ".product-next",
