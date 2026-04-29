@@ -53,7 +53,7 @@ class CommentObserver
                                     ->where('status', 0)
                                     ->count();
 
-                // Nếu bình luận từ 5 bình luận trở lên -> Khóa tài khoản
+                // Nếu bình luận từ 5 bình luận bị ẩn trở lên -> Khóa tài khoản
                 if ($commentCount >= 5) {
                     $user->update(['status' => 0]);
                 }

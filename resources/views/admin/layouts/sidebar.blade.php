@@ -9,6 +9,9 @@
                 <i class="fas fa-microchip"></i>
                 <span>Vibe Tech</span>
             </a>
+            <button onclick="toggleSidebar()" class="md:hidden text-gray-500 hover:text-gray-700 text-xl ml-3">
+                <i class="fas fa-times"></i>
+            </button>
         </div>
 
         <hr class="my-6 border-gray-200" />

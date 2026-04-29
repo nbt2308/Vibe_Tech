@@ -1,4 +1,9 @@
 <div class="container mx-auto">
+    <div class="text-center mb-8">
+        <div class="flex items-center justify-center gap-2">
+            <span class="text-2xl font-bold">Sản phẩm mới</span>
+        </div>
+    </div>
     <div class="relative group/swiper px-4 md:px-0">
         <div class="swiper productSwiper !pb-12 !pt-4">
             <div class="swiper-wrapper">

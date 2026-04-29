@@ -92,7 +92,15 @@ class OrderController extends Controller
      */
     public function store(Request $request)
     {
+
         //
+        $request->validate([
+            'customer_name' => 'required|string|max:255',
+            'customer_phone' => ['required', 'string','regex:/^(0|84|\+84)(3|5|7|8|9)([0-9]{8})$/'],
+            'customer_email' => 'required|string|max:255',
+            'customer_address' => 'required|string|max:255',
+            ]
+        );
         $cart = Carts::where('user_id', auth()->id())->with('cart_items.product')->first();
         if (!$cart || $cart->cart_items->isEmpty()) {
             return redirect()->route('home')->with('error', 'Giỏ hàng của bạn đang trống!');

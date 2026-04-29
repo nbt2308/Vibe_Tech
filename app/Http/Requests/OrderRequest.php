@@ -24,10 +24,6 @@ class OrderRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'customer_name' => 'required|string|max:255',
-            'customer_phone' => 'required|string|max:255',
-            'customer_email' => 'required|string|max:255',
-            'customer_address' => 'required|string|max:255',
             'payment_method' => 'required|string|max:255',
             'status' => [
                 'required',

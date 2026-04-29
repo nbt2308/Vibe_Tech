@@ -105,7 +105,7 @@
                                         title="Xem chi tiết đơn hàng">
                                         <i class="fas fa-eye"></i>
                                     </button>
-                                    @if($order->status !== 'completed' && $order->status !== 'cancelled')
+                                    @if ($order->status == 'pending')
                                         <button x-data @click="$dispatch('open-modal', 'cancel-order-modal-{{ $order->id }}');"
                                             class="text-red-600 hover:bg-red-50 rounded-lg p-2 transition-colors"
                                             title="Hủy đơn hàng">
